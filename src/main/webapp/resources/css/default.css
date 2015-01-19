@@ -1,0 +1,33 @@
+body {
+    background-color: rgb(210,247,212);
+    font-size: 12px;
+    font-family: Verdana, "Verdana CE",  Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
+
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    vertical-align: middle;
+}
+
+h1 {
+    font-family: Florence, cursive;
+    font-style: oblique;
+    //border-bottom: 1px solid #AFAFAF; 
+    font-size:  40px;
+    font-weight: bold;
+    margin: 10px;
+    padding: 20px;
+    color: tan;
+}
+
+a:link, a:visited {
+    color: #045491;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+a:link:hover, a:visited:hover  {
+    color: #045491;
+    font-weight : bold;
+    text-decoration : underline;
+}

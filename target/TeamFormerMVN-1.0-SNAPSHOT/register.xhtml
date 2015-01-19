@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns='http://www.w3.org/1999/xhtml'
+      xmlns:h='http://xmlns.jcp.org/jsf/html'
+      xmlns:p='http://primefaces.org/ui'
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Register</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/templates/templateguest.xhtml">
+            <ui:define name="content">
+                <h:form>
+                    <!-- Tutaj wyswietlam GIFa -->
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage name="/register/loadingbar.gif" width="100" height="100" />
+                    </p:dialog>
+
+                    <p:panel header='Register'>  
+                        <h:panelGrid columns='3' cellpadding="5">
+                            <p:outputLabel for="login" value="Login:" />   
+                            <p:inputText id="login" value="#{registerBean.login}" required="true"
+                                         requiredMessage="Głupcze! A twoja unikalna nazwa?!" validatorMessage="Co najmniej 4 znaki, balwanie!" >
+                                <f:validateLength minimum="4" />
+                            </p:inputText>
+                            <p:message for="login" />
+
+                            <h:outputLabel for="pwd1" value="Password:" />
+                            <p:password id="pwd1" value="#{registerBean.password}" match="pwd2" label="Password 1" required="true" 
+                                        requiredMessage="Hej! Potrzebujesz hasła, nieprawdaż?" validatorMessage="Co najmniej 6 znaków, czubku!" feedback="true" inline="TRUE" >
+                                <f:validateLength minimum="6" />
+                            </p:password>
+                            <p:message for="pwd1" />
+
+                            <h:outputLabel for="pwd2" value="Confirm Password:" />
+                            <p:password id="pwd2" value="#{registerBean.password}" label="Password 2" required="true" requiredMessage="Tutaj musisz potwierdzić swoje sekretne hasło!" />
+                            <p:message for="pwd2"  />
+
+                            <p:outputLabel for="email" value="E-mail:" />  
+                            <p:inputText id="email" value="#{registerBean.email}" required="true" requiredMessage="Tak, e-mail też jest wymagany.." validatorMessage="Niepoprawny e-mail! Oszukujesz!" >
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                            <p:message for="email" />
+
+                            <p:outputLabel value="" />  
+                            <p:commandButton id="register" value="Register" process="login, pwd1, pwd2, email, @this" action="#{registerBean.registerNewAcount()}" update="@form"/>
+                        </h:panelGrid>  
+                    </p:panel> 
+                </h:form>  
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
