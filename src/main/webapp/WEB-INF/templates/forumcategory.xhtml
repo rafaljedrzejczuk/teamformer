@@ -23,35 +23,39 @@
 
         <div>
             <ui:insert name="forumcategory">
-                <c:set var="category" value="#{category}" />
-                <p:accordionPanel multiple="true">
-                    <p:tab title="#{category}">
-                        <h:form id="news">
-                            <p:dataTable value="#{loggedBean.getTopicsBy(category)}" var="topic" rows="5" paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                                <p:column class="topicimage">
-                                    <p:graphicImage name="/topic/categories/#{topic.category}-icon.gif" />
-                                </p:column>
+                <div>
+                    <c:set var="category" value="#{category}" />
+                    <p:accordionPanel multiple="true">
+                        <p:tab title="#{category}">
+                            <h:form id="news">
+                                <p:dataTable value="#{loggedBean.getTopicsBy(category)}" var="topic" rows="5" paginator="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:column class="topicimage">
+                                        <p:graphicImage name="/topic/categories/#{topic.category}-icon.gif" />
+                                    </p:column>
 
-                                <p:column class="topictitle" headerText="Title">
-                                    <p:commandButton icon="ui-icon-search" title="View" action="#{loggedBean.toTopic(topic)}" />
-                                    <h:outputText value="#{topic.title}" />
-                                </p:column>
+                                    <p:column class="topictitle" headerText="Title">
+                                        <p:commandButton icon="ui-icon-search" title="View" action="#{loggedBean.toTopic(topic)}" />
+                                        <h:outputText value="#{topic.title}" />
+                                    </p:column>
 
-                                <p:column class="topicinfo" headerText="Last Post" >
-                                    <p:commandButton action="#{loggedBean.removeTopic(topic)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
-                                    <br/>
-                                    <h:outputText value="#{topic.newestPost.dateAddedToString}" />
-                                    <p:separator />
-                                    <h:outputText value="By #{topic.getTopicOwner()}" />
-                                </p:column>
-                                <f:facet name="footer">
-                                    <p:commandButton value="Add News" action="#{loggedBean.toAddTopic()}" actionListener="#{loggedBean.daoTP.setCategory('NEWS')}" icon="ui-icon-plusthick"/>
-                                </f:facet>
-                            </p:dataTable>
-                        </h:form>
-                    </p:tab>
-                </p:accordionPanel>
+                                    <p:column class="topicinfo" headerText="Last Post" >
+                                        <p:commandButton action="#{loggedBean.removeTopic(topic)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
+                                        <br/>
+                                        <h:outputText value="#{topic.newestPost.dateAddedToString}" />
+                                        <p:separator />
+                                        <h:outputText value="By #{topic.getTopicOwner()}" />
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Add News" action="#{loggedBean.toAddTopic()}" actionListener="#{loggedBean.daoTP.setCategory(category)}" icon="ui-icon-plusthick"/>
+                                    </f:facet>
+                                </p:dataTable>
+                            </h:form>
+                        </p:tab>
+                    </p:accordionPanel>
+                </div>
+                <br/>
+
             </ui:insert>
         </div>
 

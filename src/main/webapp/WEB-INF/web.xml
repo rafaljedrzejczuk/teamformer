@@ -4,29 +4,35 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-<!--    <context-param>
+    
+    <context-param>
         <param-name>primefaces.THEME</param-name>
-        <param-value>bluesky</param-value>
-    </context-param>-->
+        <param-value>humanity</param-value>
+    </context-param>
+    
     <welcome-file-list>
         <welcome-file>faces/welcome.xhtml</welcome-file>
     </welcome-file-list>
+    
     <security-constraint>
-        <display-name>myFileAdmin</display-name>
+        <display-name>myJDBCAdmin pages</display-name>
         <web-resource-collection>
             <web-resource-name>adminpp</web-resource-name>
             <description>admin pages</description>
@@ -37,14 +43,16 @@
             <role-name>ADMIN</role-name>
         </auth-constraint>
     </security-constraint>
+    
     <login-config>
         <auth-method>FORM</auth-method>
-        <realm-name>MyJDBCRealm</realm-name>
+        <realm-name>${realm.name}</realm-name>
         <form-login-config>
             <form-login-page>/faces/login.xhtml</form-login-page>
             <form-error-page>/faces/login.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    
     <security-role>
         <description>administrators group</description>
         <role-name>ADMIN</role-name>
