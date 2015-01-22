@@ -57,4 +57,11 @@
         <description>administrators group</description>
         <role-name>ADMIN</role-name>
     </security-role>
+    
+    <resource-ref>
+        <res-ref-name>asd</res-ref-name>
+        <res-type>javax.mail.Session</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
 </web-app>

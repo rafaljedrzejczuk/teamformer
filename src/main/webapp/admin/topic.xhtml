@@ -12,53 +12,46 @@
     </h:head>
     <h:body>
         <h:outputScript name="/javascript/godown.js" />
-        <ui:composition template="/WEB-INF/templates/template.xhtml">
+        <ui:composition template="/WEB-INF/templates/template_admin.xhtml">
             <ui:define name="content">
                 <!-- Topic's posts -->
                 <center>
 
                     <h:form> 
-                        <f:facet name="header">
-                            #{loggedBean.daoTP.selectedTopic.title}
-                        </f:facet>
-
-                        <h:form id="news"> 
-                            <p:dataTable value="#{loggedBean.daoTP.selectedTopicPosts}" var="post" rows="15" paginator="true"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-
-                                <p:column class="postauthor" headerText="Author:">
-                                    <h:outputText value="#{post.idOwner.login}" style="font-weight: bold; color: palevioletred;" />
-                                </p:column>
-
-                                <p:column class="posttext" headerText="#{loggedBean.daoTP.selectedTopic.title}" >
-                                    <h:outputText value="#{post.text}" escape="false"/>
-                                </p:column>
-
-                                <p:column class="postinfo" headerText="Added">
-                                    <p:commandButton action="#{loggedBean.removePost(post)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
-                                    <br/>
-                                    <h:outputText value="#{post.dateAddedToString}" />
-                                </p:column>
-
-                            </p:dataTable>
-
-                            <f:facet name="footer">
-                                <p:inplace id="basic" effect="slide">
-                                    <p:outputLabel value="Dodaj post.." />
-
-                                    <hr/>
-                                    <p:editor  id="editor" widgetVar="editorWidget" value="#{loggedBean.daoTP.text}" required="true" width="600"
-                                               requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 255 znaków, patafianie!">
-                                        <f:validateLength minimum="10" maximum="255" />
-                                    </p:editor>
-                                    <p:message for="editor" style="margin-top: 10px;"/>
-                                </p:inplace>
+                        <p:panel header="Chat">
+                            <f:facet name="header">
+                                #{loggedBean.daoTP.selectedTopic.title}
                             </f:facet>
-                            <hr/>
-                            <p:commandButton id="submit" value="Dodaj post" process="editor, @this, news" action="#{loggedBean.addPost()}" update="@form, news" ajax="false"/>
-                        </h:form>
 
-                        <hr/>
+                            <h:form id="news"> 
+                                <p:dataTable value="#{loggedBean.daoTP.selectedTopicPosts}" var="post" rows="15" paginator="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                    <p:column class="postauthor" headerText="Author:">
+                                        <h:outputText value="#{post.idOwner.login}" style="font-weight: bold; color: palevioletred;" />
+                                    </p:column>
+
+                                    <p:column class="posttext" headerText="#{loggedBean.daoTP.selectedTopic.title}" >
+                                        <h:outputText value="#{post.text}" escape="false"/>
+                                    </p:column>
+
+                                    <p:column class="postinfo" headerText="Added">
+                                        <p:commandButton action="#{loggedBean.removePost(post)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
+                                        <br/>
+                                        <h:outputText value="#{post.dateAddedToString}" />
+                                    </p:column>
+
+                                </p:dataTable>
+                                <br/>
+                                <p:editor  id="editor" widgetVar="editorWidget" value="#{loggedBean.daoTP.text}" required="true" width="600"
+                                           requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 255 znaków, patafianie!">
+                                    <f:validateLength minimum="10" maximum="255" />
+                                </p:editor>
+                                <p:message for="editor" style="margin-top: 10px;"/>
+                                <p:commandButton id="submit" value="Dodaj post" process="editor, @this, news" action="#{loggedBean.addPost()}" update="@form, news"/>
+                            </h:form>
+
+                        </p:panel>
                     </h:form>
 
                 </center>

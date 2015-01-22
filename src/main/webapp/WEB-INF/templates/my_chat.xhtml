@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <script type="text/javascript">
+            $(document).ready(
+                    function () {
+                        setInterval(function () {
+                            var randomnumber = Math.floor(Math.random() * 100);
+                            $('#show').text(
+                                    'I am getting refreshed every 3 seconds..! Random Number ==> '
+                                    + randomnumber);
+                        }, 3000);
+                    });
+        </script>
+    </h:head>
+
+
+    <h:body>
+
+        <div>
+            <ui:insert name="chat">
+                <div id="show">
+
+                </div>
+                <br/>
+            </ui:insert>
+        </div>
+
+    </h:body>
+</html>

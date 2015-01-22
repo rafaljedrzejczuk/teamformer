@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.teamformer.dao;
 
 import java.util.ArrayList;
@@ -19,7 +14,9 @@ import pl.teamformer.data.Account;
 import pl.teamformer.forum.Post;
 import pl.teamformer.forum.Topic;
 import pl.teamformer.forum.Topic.Category;
+import lombok.*;
 
+@Data
 @Stateless
 public class DaoTopicPost {
 
@@ -28,9 +25,11 @@ public class DaoTopicPost {
         private String text = "Treść";
         private Category category;
 
-        private EntityManager entityManager;
         private List<Topic> topics;
         private Topic selectedTopic;
+
+        @PersistenceContext
+        private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PostConstruct
         public void init() {
@@ -43,57 +42,12 @@ public class DaoTopicPost {
                 System.out.println("Niszcze DAO TOPIC POST");
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public String getTitle() {
-                return title;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void setTitle(String title) {
-                this.title = title;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public String getText() {
-                return text;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void setText(String text) {
-                this.text = text;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic.Category getCategory() {
-                return category;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void setCategory(String ca) {
-                this.category = Category.valueOf(ca);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public List<Topic> getTopics() {
-                return topics;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void setTopics(List<Topic> topics) {
-                this.topics = topics;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public EntityManager getEntityManager() {
-                return entityManager;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PersistenceContext
-        public void setEntityManager(EntityManager entityManager) {
-                this.entityManager = entityManager;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic getSelectedTopic() {
-                return selectedTopic;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void setSelectedTopic(Topic selectedTopic) {
-                this.selectedTopic = selectedTopic;
+        public void setCategoryFromString(String category) {
+                this.category = Category.valueOf(category);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Post> getSelectedTopicPosts() {
-                return selectedTopic.getPosts();
+                return getSelectedTopic().getPosts();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void readTopics() {
@@ -121,18 +75,20 @@ public class DaoTopicPost {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addTopic(String title, String text, Account account, Category category) {
+                System.out.println("First Post is created in Topic Class");
                 Topic t = new Topic(title, text, account, category);
-                topics.add(t);
-                System.out.println("Merging a topic..");
-                selectedTopic = getEntityManager().merge(t);
+                getTopics().add(t);
+                System.out.println("Merging a topic and first post..");
+                System.out.println(category.name());
+                setSelectedTopic(getEntityManager().merge(t));
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addPost(Account account) {
-                Post p = new Post(text, account, selectedTopic);
-                selectedTopic.addPost(p);
+                Post p = new Post(getText(), account, getSelectedTopic());
+                getSelectedTopic().addPost(p);
                 System.out.println("Merging a post..");
-                getEntityManager().merge(selectedTopic);
-                refreshPosts(selectedTopic);
+                getEntityManager().merge(getSelectedTopic());
+                refreshPosts(getSelectedTopic());
                 System.out.println("Post merged!");
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -154,20 +110,21 @@ public class DaoTopicPost {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removeTopic(Topic t) {
-                Topic toRemove = entityManager.merge(t);
+                Topic toRemove = getEntityManager().merge(t);
                 System.out.println("Removing a topic..");
-                entityManager.remove(toRemove);
+                getEntityManager().remove(toRemove);
         }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        /*&^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removePost(Post p) {
-                Post toRemove = entityManager.merge(p);
+                Post toRemove = getEntityManager().merge(p);
                 System.out.println("Removing a post..");
-                entityManager.remove(toRemove);
-                refreshPosts(selectedTopic);
+                getEntityManager().remove(toRemove);
+                refreshPosts(getSelectedTopic());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void refreshPosts(Topic t) {
-                t.setPosts(entityManager.createNamedQuery("Post.findByTopicID").setParameter("idTopic", t).getResultList());
+                if (t != null)
+                        t.setPosts(getEntityManager().createNamedQuery("Post.findByTopicID").setParameter("idTopic", t).getResultList());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

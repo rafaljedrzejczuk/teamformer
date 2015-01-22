@@ -1,12 +1,11 @@
 $(document).ready(function () {
-    
-    $("#top").hide();
-    $("#content").hide();
-    $("#bottom").hide();
+    $("#top").css({opacity: 0});
+    $("#content").css({opacity: 0});
+    $("#bottom").css({opacity: 0});
 
     setTimeout(function () {
-        $("#top").fadeIn();
-        $("#content").fadeIn("slow");
-        $("#bottom").fadeIn(3000);
+        $("#top").fadeTo(500, 1);
+        $("#content").fadeTo("slow", 1);
+        $("#bottom").fadeTo(3000, 1);
     }, 500);
 });

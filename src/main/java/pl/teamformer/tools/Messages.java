@@ -11,6 +11,9 @@ import javax.faces.context.Flash;
 public final class Messages {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        private Messages() {
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public static void showMessageInfo(String title, String message) {
                 FacesContext context = FacesContext.getCurrentInstance();
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, title, message));
@@ -53,7 +56,7 @@ public final class Messages {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public static void redirectWithMessage(String path, String message) {
-                String faces = (path.equals("")) ? "" : "/faces/";
+                String faces = ("".equals(path)) ? "" : "/faces/";
 
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 Flash flash = facesContext.getExternalContext().getFlash();
@@ -70,7 +73,7 @@ public final class Messages {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public static void redirect(String path) {
-                String faces = (path.equals("")) ? "" : "/faces/";
+                String faces = ("".equals(path)) ? "" : "/faces/";
 
                 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
                 try {

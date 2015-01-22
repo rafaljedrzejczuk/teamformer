@@ -26,6 +26,11 @@
             <to-view-id>admin/home.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>chat</from-outcome>
+            <to-view-id>admin/my_chat.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
     <application>

@@ -4,27 +4,15 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-        <h:outputScript name="/javascript/backgroundflow.js" />
-        <h:outputScript name="/javascript/fadein.js" />
-        <h:outputScript name="/javascript/fadeout.js" />
-
-        <h:outputStylesheet name="/css/default.css"/>
-        <h:outputStylesheet name="/css/cssLayout.css"/>
-        <title>TeamFormer Forum</title>
-    </h:head>
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <h:body>
 
         <div>
             <ui:insert name="forumcategory">
                 <div>
-                    <c:set var="category" value="#{category}" />
+                        
+                    <!--<c:set var="category" value="#{category}" /> <=NIE JEST OBOWIAZKOWE-->
                     <p:accordionPanel multiple="true">
                         <p:tab title="#{category}">
                             <h:form id="news">
@@ -47,15 +35,15 @@
                                         <h:outputText value="By #{topic.getTopicOwner()}" />
                                     </p:column>
                                     <f:facet name="footer">
-                                        <p:commandButton value="Add News" action="#{loggedBean.toAddTopic()}" actionListener="#{loggedBean.daoTP.setCategory(category)}" icon="ui-icon-plusthick"/>
+                                        <p:commandButton value="Add #{category.toLowerCase()}" action="#{loggedBean.toAddTopic()}" actionListener="#{loggedBean.daoTP.setCategoryFromString(category)}" icon="ui-icon-plusthick"/>
                                     </f:facet>
                                 </p:dataTable>
                             </h:form>
                         </p:tab>
                     </p:accordionPanel>
+                        
                 </div>
                 <br/>
-
             </ui:insert>
         </div>
 
