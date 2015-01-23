@@ -8,9 +8,9 @@ $(document).ready(function () {
     var beginning_opacity = 1;
     var scroll_pos = 0;
     var animation_begin_pos = 0; //where you want the animation to begin
-    var animation_end_pos = 1000; //where you want the animation to stop
+    var animation_end_pos = 1500; //where you want the animation to stop
     var beginning_color = new $.Color("rgb(210,247,212)"); //we can set this here, but it'd probably be better to get it from the CSS; for the example we're setting it here.
-    var ending_color = new $.Color("rgb(255,248,199)");
+    var ending_color = new $.Color("rgb(200,150,150)");
     //what color we want to use in the end
     $(document).scroll(function () {
         scroll_pos = $(this).scrollTop();

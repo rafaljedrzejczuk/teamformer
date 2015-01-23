@@ -7,4 +7,17 @@
       <property name="javax.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
+  
+  <persistence-unit name="TestPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>entity.user</class>
+    <properties>
+      <property name="hibernate.connection.url" value="jdbc:h2:/~test"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+      <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+      <property name="hibernate.connection.password" value="admin"/>
+      <property name="hibernate.connection.username" value="admin"/>
+      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+    </properties>
+  </persistence-unit>
 </persistence>
