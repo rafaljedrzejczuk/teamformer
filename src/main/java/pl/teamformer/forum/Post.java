@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.teamformer.forum;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import pl.teamformer.data.Account;
 import pl.teamformer.tools.DateFormatters;
@@ -31,7 +25,7 @@ import pl.teamformer.tools.DateFormatters;
 @Data
 @Entity
 @Table(name = "POST")
-@XmlRootElement
+@SequenceGenerator(allocationSize = 1, name = "POST_GEN", sequenceName = "POST_ID")
 @NamedQueries({
         @NamedQuery(name = "Post.findAll", query = "SELECT po FROM Post po"),
         @NamedQuery(name = "Post.findByTopicID", query = "SELECT po FROM Post po WHERE po.idTopic = :idTopic")})
@@ -39,8 +33,7 @@ public class Post implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "Post")
-        @Basic(optional = false)
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "POST_GEN")
         @NotNull
         @Column(name = "ID")
         private Long id;

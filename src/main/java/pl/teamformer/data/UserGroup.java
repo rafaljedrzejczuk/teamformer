@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.teamformer.data;
 
 import java.io.Serializable;
@@ -13,22 +8,22 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import lombok.Data;
 
-/**
- *
- * @author praktyka.it
- */
 @Data
 @Entity
+@Table(name = "USERGROUP")
+@SequenceGenerator(allocationSize = 1, name = "USERGROUP_GEN", sequenceName = "USERGROUP_ID")
 public class UserGroup implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         private static final long serialVersionUID = 1L;
 
         @Id
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "USERGROUP_GEN")
         @Column(name = "ID")
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "Group")
         private Long id;
 
         @Column(name = "LOGIN")

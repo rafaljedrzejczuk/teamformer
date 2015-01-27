@@ -2,7 +2,6 @@ package pl.teamformer.data;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,18 +14,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
 @Entity
 @Table(name = "ACCOUNT")
-@XmlRootElement
+@SequenceGenerator(allocationSize = 1, name = "ACCOUNT_GEN", sequenceName = "ACCOUNT_ID")
 @NamedQueries({
         @NamedQuery(name = "Account.findAll", query = "SELECT ac FROM Account ac"),
         @NamedQuery(name = "Account.findByLogin", query = "SELECT ac FROM Account ac WHERE ac.login = :login")})
@@ -36,8 +35,7 @@ public class Account implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "User")
-        @Basic(optional = false)
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "ACCOUNT_GEN")
         @NotNull
         @Column(name = "ID")
         private Long id;

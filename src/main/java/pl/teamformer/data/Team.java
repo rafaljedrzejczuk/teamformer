@@ -1,27 +1,26 @@
 package pl.teamformer.data;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import lombok.Data;
 
 @Data
 @Entity
 @Table(name = "TEAM")
-@XmlRootElement
+@SequenceGenerator(allocationSize = 1, name = "TEAM_GEN", sequenceName = "TEAM_ID")
 @NamedQueries({
         @NamedQuery(name = "Team.findAll", query = "SELECT t FROM Team t")})
 public class Team implements Serializable {
@@ -30,8 +29,7 @@ public class Team implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "Team")
-        @Basic(optional = false)
+        @GeneratedValue(strategy = GenerationType.AUTO, generator = "TEAM_GEN")
         @NotNull
         @Column(name = "ID")
         private Long id;
@@ -40,9 +38,8 @@ public class Team implements Serializable {
         @Column(name = "NAME", length = 30, unique = true, nullable = false)
         private String name;
 
-        @OneToOne(cascade = CascadeType.ALL)
-        @JoinColumn(name = "ID_OWNER", referencedColumnName = "ID", unique = true, nullable = false)
-        private Account idOwner;
+        @OneToMany(mappedBy = "idTeam",cascade = CascadeType.ALL)
+        private List<Account> idOwner;
 
         @Column(name = "RANK")
         private Long rank;

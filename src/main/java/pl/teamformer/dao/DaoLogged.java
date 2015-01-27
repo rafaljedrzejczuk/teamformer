@@ -1,8 +1,6 @@
 package pl.teamformer.dao;
 
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,27 +19,38 @@ public class DaoLogged {
         @PersistenceContext
         private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PostConstruct
-        public void init() {
+        public DaoLogged() {
                 readAccounts();
                 readTeams();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PreDestroy
-        public void destroy() {
+        public Account regsterAccount(String login, String password, String email) {
+                Account a = new Account(login, password, email);
+                getAccounts().add(a);
+                System.out.println("Account registering..");
+
+                getEntityManager().persist(a);
+                return getEntityManager().merge(a);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Account getAccountByLogin(String login) {
-                return (Account) getEntityManager().createNamedQuery("Account.findByLogin").setParameter("login", login).getSingleResult();
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void readAccounts() {
+        public final void readAccounts() {
                 System.out.println("readAccounts()");
                 setAccounts((List<Account>) getEntityManager().createNamedQuery("Account.findAll").getResultList());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void readTeams() {
+        public void removeAccount(Account a) {
+                Account toRemove = getEntityManager().merge(a);
+                System.out.println("Removing an account..");
+                getEntityManager().remove(toRemove);
+                accounts.remove(a);
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        public final void readTeams() {
                 setTeams((List<Team>) getEntityManager().createNamedQuery("Team.findAll").getResultList());
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        public Account getAccountByLogin(String login) {
+                return (Account) getEntityManager().createNamedQuery("Account.findByLogin").setParameter("login", login).getSingleResult();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

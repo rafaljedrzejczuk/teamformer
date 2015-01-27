@@ -16,7 +16,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import lombok.Data;
-import org.primefaces.context.RequestContext;
 import pl.teamformer.dao.DaoLogged;
 import pl.teamformer.dao.DaoTopicPost;
 import pl.teamformer.data.Account;
