@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pl.teamformer.beans;
 
 import java.io.Serializable;
@@ -16,7 +11,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import lombok.Data;
-import pl.teamformer.dao.DaoLogged;
+import pl.teamformer.dao.DaoAccount;
 import pl.teamformer.dao.DaoTopicPost;
 import pl.teamformer.data.Account;
 import pl.teamformer.forum.Post;
@@ -36,7 +31,7 @@ public class LoggedBean implements Serializable {
         @Inject
         private SessionContext sessionContext;
         @Inject
-        private DaoLogged dao;
+        private DaoAccount dao;
         @Inject
         private DaoTopicPost daoTP;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

@@ -8,27 +8,27 @@
         <!--<from-view-id>/index.xhtml</from-view-id>-->
         <navigation-case>
             <from-outcome>register</from-outcome>
-            <to-view-id>register.xhtml</to-view-id>
+            <to-view-id>/register.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>login</from-outcome>
-            <to-view-id>login.xhtml</to-view-id>
+            <to-view-id>/login.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>welcome</from-outcome>
-            <to-view-id>welcome.xhtml</to-view-id>
+            <to-view-id>/welcome.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>home</from-outcome>
-            <to-view-id>admin/home.xhtml</to-view-id>
+            <to-view-id>/admin/home.xhtml</to-view-id>
             <redirect />
         </navigation-case>
         <navigation-case>
             <from-outcome>chat</from-outcome>
-            <to-view-id>admin/my_chat.xhtml</to-view-id>
+            <to-view-id>/admin/chat.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

@@ -16,28 +16,24 @@ import pl.teamformer.data.Account;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 import pl.teamformer.data.Team;
+import static pl.teamformer.tools.MyOut.myOut;
 
-public class DaoLoggedTest {
+public class DaoAccountTest {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         private static EntityManager EM;
         private static final String PU = "TestPU";
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private static void myOut(String message) {
-                String top = "";
-                final int count = 80;
-                for (int i = 0; i < count; i++) {
-                        top += '#';
-                        if (i % 4 == 0)
-                                message = " " + message;
-                }
-                System.out.println("\033[31m" + top + "\n" + message + "  \033[0m");
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @BeforeClass
         public static void setUpClass() {
-                myOut("DaoLogged Tests");
+                myOut("DaoAccount Tests #1");
                 EM = Persistence.createEntityManagerFactory(PU).createEntityManager();
+
+                System.out.println("INSERTING 4 ACCOUNT ROWS!!!");
+                EM.persist(new Account(PU, PU, PU));
+                EM.persist(new Account(PU + "2", "aaaaaaaa", "aaaa@aa.aa"));
+                EM.persist(new Account(PU + "3", "bbbbbbbb", "bbbb@bb.bb"));
+                EM.persist(new Account(PU + "4", "cccccccc", "cccc@cc.cc"));
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @AfterClass
@@ -58,7 +54,9 @@ public class DaoLoggedTest {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Test
         public void testGetAccounts() throws Exception {
-                final DaoLogged dao = new DaoLogged();
+                myOut("getAccounts");
+                
+                final DaoAccount dao = new DaoAccount();
                 assertNull(dao.getAccounts());
 
                 List<Account> accs = new ArrayList();
@@ -69,7 +67,9 @@ public class DaoLoggedTest {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Test
         public void testGetTeams() throws Exception {
-                final DaoLogged dao = new DaoLogged();
+                myOut("getTeams");
+                
+                final DaoAccount dao = new DaoAccount();
                 assertNull(dao.getTeams());
 
                 List<Team> teams = new ArrayList();
@@ -80,7 +80,9 @@ public class DaoLoggedTest {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Test
         public void testGetEntityManager() throws Exception {
-                final DaoLogged dao = new DaoLogged();
+                myOut("getEntityManager");
+                
+                final DaoAccount dao = new DaoAccount();
                 assertNull(dao.getEntityManager());
 
                 dao.setEntityManager(EM);
@@ -88,41 +90,24 @@ public class DaoLoggedTest {
                 assertThat(dao.getEntityManager(), equalTo(EM));
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Test//(expected = ConstraintViolationException.class)
-        public void testRegisterAccount() {
-                myOut("registerAccount");
-
-                final DaoLogged dao = new DaoLogged();
-                dao.setEntityManager(EM);
-                dao.readAccounts();
-
-                dao.regsterAccount(PU, PU, PU);
-                dao.regsterAccount(PU + "2", "aaaaaaaa", "aaaa@aa.aa");
-                dao.regsterAccount(PU + "3", "bbbbbbbb", "bbbb@bb.bb");
-                dao.regsterAccount(PU + "4", "cccccccc", "cccc@cc.cc");
-
-                //Should throw the error
-//                dao.regsterAccount(PU, PU, PU);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Test
-        public void testReadAccounts() throws Exception {
-                myOut("readAccounts");
+        public void testInit() throws Exception {
+                myOut("init");
 
-                final DaoLogged dao = new DaoLogged();
+                final DaoAccount dao = new DaoAccount();
                 dao.setEntityManager(EM);
-                dao.readAccounts();
+                dao.init();
 
-                assertEquals(dao.getAccounts().size(), 4);
+                assertEquals(4, dao.getAccounts().size());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Test
         public void testGetAccountByLogin() throws Exception {
                 myOut("getAccountsByLogin");
 
-                final DaoLogged dao = new DaoLogged();
+                final DaoAccount dao = new DaoAccount();
                 dao.setEntityManager(EM);
-                dao.readAccounts();
+                dao.init();
 
                 assertThat(dao.getAccountByLogin(PU).getLogin(), equalTo(PU));
         }
@@ -131,25 +116,21 @@ public class DaoLoggedTest {
         public void testRemoveAccount() {
                 myOut("removeAccount");
 
-                final DaoLogged dao = new DaoLogged();
+                final DaoAccount dao = new DaoAccount();
                 dao.setEntityManager(EM);
-                dao.readAccounts();
+                dao.init();
 
                 dao.removeAccount(dao.getAccountByLogin(PU));
-                dao.readAccounts();
-                assertEquals(dao.getAccounts().size(), 3);
+                dao.init();
+                assertEquals(3, dao.getAccounts().size());
 
                 EM.flush();
                 EM.getTransaction().commit();
                 EM.getTransaction().begin();
 
-                dao.regsterAccount(PU, PU, PU);
-                dao.readAccounts();
-                assertEquals(dao.getAccounts().size(), 4);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Test
-        public void testReadTeams() throws Exception {
+                dao.registerAccount(PU, PU, PU, false);
+                dao.init();
+                assertEquals(4, dao.getAccounts().size());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }
