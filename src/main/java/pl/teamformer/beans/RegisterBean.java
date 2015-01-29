@@ -36,13 +36,12 @@ public class RegisterBean implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PostConstruct
         public void init() {
-                System.out.println("Inits REGISTER BEAN");
                 dao.getAccounts();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void registerAcount() throws NoSuchAlgorithmException, UnsupportedEncodingException {
                 if (dao.registerAccount(login, password, email, true)) {
-                        sendMessage(login, password, email);
+                        //sendMessage(login, password, email);
                         Messages.redirectWithMessage("admin/home.xhtml", "Konto *" + login + "* zostało pomyślnie zarejstrowane!");
                 }
         }

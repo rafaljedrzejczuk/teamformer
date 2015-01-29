@@ -3,14 +3,15 @@ package pl.teamformer.beans;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import javax.ejb.SessionContext;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import pl.teamformer.dao.DaoAccount;
 import pl.teamformer.dao.DaoTopicPost;
 import pl.teamformer.data.Account;
@@ -27,23 +28,24 @@ public class LoggedBean implements Serializable {
         private String password = null;
         private String login = null;
         private Account account;
+        private Account selectedAccount;
 
         @Inject
+        @Getter(AccessLevel.NONE)
         private SessionContext sessionContext;
         @Inject
+        @Getter(AccessLevel.NONE)
         private DaoAccount dao;
         @Inject
         private DaoTopicPost daoTP;
+        @Inject
+        @Getter(AccessLevel.NONE)
+        private AccountDictionaryBean adb;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PostConstruct
         public void init() {
                 account = dao.getAccountByLogin(getName());
-                System.out.println("Inits LoggedBean");
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PreDestroy
-        public void destroy() {
-                System.out.println("Destroys LoggedBean");
+                adb.addActiveUser(account.getLogin());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Topic> getTopics() {
@@ -55,9 +57,16 @@ public class LoggedBean implements Serializable {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void logOut() {
+                adb.deleteUnActiveUser(account);
                 ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
                 ec.invalidateSession();
-                Messages.redirectWithMessage("Wylogowałeś się!");
+                Messages.redirectWithMessage("Zostałeś wylogowany!");
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        public void ifLoggedIn() {
+                if (!adb.getActiveAccounts().contains(account))
+                        logOut();
+                System.out.println("Jesteś zalogowany!");
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addTopic() {
@@ -93,10 +102,6 @@ public class LoggedBean implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removePost(Post p) {
                 daoTP.removePost(p);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void showMessage(String m) {
-                Messages.showMessageInfo(m);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

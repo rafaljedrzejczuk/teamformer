@@ -31,6 +31,16 @@
             <to-view-id>/admin/chat.xhtml</to-view-id>
             <redirect />
         </navigation-case>
+        <navigation-case>
+            <from-outcome>account</from-outcome>
+            <to-view-id>/admin/account.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>account_set</from-outcome>
+            <to-view-id>/admin/account_settings.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
     </navigation-rule>
     
     <application>

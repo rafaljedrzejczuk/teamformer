@@ -20,7 +20,8 @@ public class MyChat {
         @Setter
         @Getter
         private volatile String message;
-        private final int size = 100;
+        
+        private static final int SIZE = 100;
 
         @Inject
         private SessionContext sessionContext;
@@ -31,7 +32,7 @@ public class MyChat {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public synchronized void addMessage() {
-                if (messages.size() >= size)
+                if (messages.size() >= SIZE)
                         messages.remove(messages.size() - 1);
                 messages.add(0, "[" + new Date() + "] " + getName() + ": " + message);
                 message = "";

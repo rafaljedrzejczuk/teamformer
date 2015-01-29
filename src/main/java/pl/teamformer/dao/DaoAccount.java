@@ -34,16 +34,11 @@ public class DaoAccount {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         private void readAccounts() {
-                System.out.println("readAccounts()");
                 setAccounts((List<Account>) getEntityManager().createNamedQuery("Account.findAll").getResultList());
-                if (accounts == null)
-                        accounts = new ArrayList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         private void readTeams() {
                 setTeams((List<Team>) getEntityManager().createNamedQuery("Team.findAll").getResultList());
-                if (teams == null)
-                        teams = new ArrayList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean registerAccount(String login, String password, String email, boolean messaging) {
@@ -70,7 +65,10 @@ public class DaoAccount {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Account getAccountByLogin(String login) {
-                return (Account) getEntityManager().createNamedQuery("Account.findByLogin").setParameter("login", login).getSingleResult();
+                for (Account a : accounts)
+                        if (a.getLogin().equals(login))
+                                return a;
+                return null;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean ifLoginOrEmailExists(String login, String email, boolean messaging) {

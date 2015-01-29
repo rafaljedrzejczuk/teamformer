@@ -133,7 +133,7 @@
             <type>jar</type>
         </dependency>
         
-<!--                <dependency>
+        <!--                <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
@@ -255,6 +255,21 @@
             </plugin>
         </plugins>
     </build>
+    <!-- REPORTS -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.4.0</version>
+            </plugin>
+        </plugins>
+    </reporting>
     <!-- PROFILES -->
     <profiles> 
         <profile> 

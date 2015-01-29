@@ -8,9 +8,9 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-                <h:outputScript name="/javascript/backgroundflow.js" />
-                <h:outputScript name="/javascript/fadein.js" />
-                <h:outputScript name="/javascript/fadeout.js" />
+        <h:outputScript name="/javascript/backgroundflow.js" />
+        <h:outputScript name="/javascript/fadein.js" />
+        <h:outputScript name="/javascript/fadeout.js" />
 
         <h:outputStylesheet name="/css/default.css"/>
         <h:outputStylesheet name="/css/cssLayout.css"/>
@@ -24,11 +24,16 @@
                 <ui:insert name="top"><h1>TeamFormer</h1></ui:insert>
                 <p:commandButton id="home" value="Home" icon="ui-icon-home" action="home" ajax="false"/>
                 <p:commandButton id="chat" value="Chat" icon="ui-icon-comment" action="chat"/>
-                <p:commandButton id="logout" value="Wyloguj, #{loggedBean.name}" icon="ui-icon-power" action="#{loggedBean.logOut()}" />
+                <p:commandButton id="account" value="Your Account" icon="ui-icon-person" action="account"
+                                 actionListener="#{loggedBean.setSelectedAccount(loggedBean.account)}"/>
+                <p:commandButton id="account_set" value="Account Settings" icon="ui-icon-wrench" action="account_set"/>
+                <p:commandButton id="search" value="Search" icon="ui-icon-home" action="home"/>
+                <p:commandButton id="logout" value="Wyloguj, #{loggedBean.name}" icon="ui-icon-search" 
+                                 action="#{loggedBean.logOut()}"/>
             </h:form>
         </div>
 
-        <p:messages id="messages" autoUpdate="true" globalOnly="true" closable="true" showSummary="false" showDetail="true"/>
+        <!--<p:messages id="messages" autoUpdate="true" globalOnly="true" closable="true" showSummary="false" showDetail="true"/>-->
 
         <div id="content" class="center_content">
             <ui:insert name="content">Content</ui:insert>
@@ -40,5 +45,20 @@
             </h:form>
         </div>
 
+        <!-- IDLE - SESSION CHEKCER --> 
+        <h:form>
+            <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
+
+            <!-- 10 mins -->
+            <p:idleMonitor timeout="600000">
+                <p:ajax event="idle" listener="#{loggedBean.logOut()}" update="messagesIdle" />
+                <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
+            </p:idleMonitor>
+        </h:form>
+
+        <!-- CHECKS IF USER WAS LOGGED OUT FROM ANOTHER VIEW -->
+        <h:form>
+            <p:poll interval="1" listener="#{loggedBean.ifLoggedIn()}" />
+        </h:form>
     </h:body>
 </html>

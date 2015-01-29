@@ -19,7 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
@@ -48,6 +50,9 @@ public class Account implements Serializable {
 
         @Column(name = "EMAIL", nullable = false, unique = true)
         private String email;
+
+        @Column(name = "AVATAR_URL")
+        private String avatarURL;
 
         @Enumerated(EnumType.STRING)
         private Status status = Status.INACTIVATED;
@@ -87,25 +92,14 @@ public class Account implements Serializable {
         private String group;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Account() {
-                this.email = "dsa";
-                this.password = "aha";
-                this.login = "dsadas";
-
-                this.actions = 6;
-                this.postsCount = 0;
-                this.warn = 0;
-
                 this.dateAdded = new Date();
-                this.lastVisited = new Date();
-                this.group = "ADMIN";
-
-//                this.idGroup = new UserGroup(login);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Account(String login, String password, String email) {
                 this.login = login;
                 this.password = password;
                 this.email = email;
+                this.avatarURL = "";
 
                 this.actions = 6;
                 this.postsCount = 0;
