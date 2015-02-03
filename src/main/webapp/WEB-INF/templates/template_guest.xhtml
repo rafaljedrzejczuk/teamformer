@@ -40,5 +40,15 @@
             </h:form>
         </div>
 
+        <!-- IDLE - SESSION CHEKCER --> 
+        <h:form>
+            <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
+
+            <!-- 5s -->
+            <p:idleMonitor timeout="5000">
+                <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
+            </p:idleMonitor>
+        </h:form>
+        
     </h:body>
 </html>

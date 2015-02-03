@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import lombok.Getter;
 import lombok.Setter;
+import pl.teamformer.tools.DateFormatters;
 
 @Named
 @ApplicationScoped
@@ -20,7 +21,7 @@ public class MyChat {
         @Setter
         @Getter
         private volatile String message;
-        
+
         private static final int SIZE = 100;
 
         @Inject
@@ -34,7 +35,8 @@ public class MyChat {
         public synchronized void addMessage() {
                 if (messages.size() >= SIZE)
                         messages.remove(messages.size() - 1);
-                messages.add(0, "[" + new Date() + "] " + getName() + ": " + message);
+                messages.add(0, "[" + DateFormatters.SDF_DATE.format(new Date())
+                        + " at "+ DateFormatters.SDF_HOUR.format(new Date()) + "] " + getName() + ": " + message);
                 message = "";
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

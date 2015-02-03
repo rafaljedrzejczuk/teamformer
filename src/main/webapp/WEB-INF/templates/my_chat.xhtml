@@ -6,40 +6,39 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <h:body>
+      <h:body>
 
-        <ui:insert name="my_chat">
-            <div id="show">
-                <!--<p:accordionPanel multiple="true">-->
-                    <h:form>
-                        <center>
+            <ui:insert name="my_chat">
+                  <div id="show">
+                        <!--<p:accordionPanel multiple="true">-->
+                        <h:form>
+                              <center>
 
-                            <p:panel header="Chat">
-                                <p:remoteCommand id="rc" name="rcChat" update="@form" />
-                                <p:scrollPanel style="height: 300px;" mode="native">
-                                    <p:dataTable id="messages" value="#{myChat.messages}" var="message">
-                                        <p:column class="message">
-                                            <h:outputText value="#{message}" style="font-weight: bold; color: palevioletred; " />
-                                        </p:column>
-                                    </p:dataTable>
-                                    <p:poll interval="1" update="messages" />
-                                </p:scrollPanel>
+                                    <p:panel header="Chat" toggleable="true">
+                                          <p:scrollPanel style="height: 300px;" mode="native">
+                                                <p:dataTable id="messages" value="#{myChat.messages}" var="message">
+                                                      <p:column class="message">
+                                                            <h:outputText value="#{message}" style="font-weight: bold; color: palevioletred; " />
+                                                      </p:column>
+                                                </p:dataTable>
+                                                <p:poll interval="1" update="messages" />
+                                          </p:scrollPanel>
 
-                                <h:panelGrid columns='2'>
-                                    <p:inputText id="message" value="#{myChat.message}" required="true" style="width: 600px;"
-                                                 requiredMessage="Nie podałes treści wadomości!" validatorMessage="Co najmniej 12 znaków, max 30, balwanie!" >
-                                        <f:validateLength maximum="511" />
-                                    </p:inputText>
-                                    <p:commandButton id="submit" value="Send" icon="ui-icon-comment" action="#{myChat.addMessage()}" update="@form"/>
-                                </h:panelGrid>
-                            </p:panel>
+                                          <h:panelGrid columns='2'>
+                                                <p:inputText id="message" value="#{myChat.message}" required="true" style="width: 600px;"
+                                                             requiredMessage="Nie podałes treści wadomości!" validatorMessage="Co najmniej 12 znaków, max 30, balwanie!" >
+                                                      <f:validateLength maximum="511" />
+                                                </p:inputText>
+                                                <p:commandButton id="submit" value="Send" icon="ui-icon-comment" action="#{myChat.addMessage()}" update="@form"/>
+                                          </h:panelGrid>
+                                    </p:panel>
 
-                        </center>
-                    </h:form>
-                <!--</p:accordionPanel>-->
-            </div>
-            <br/>
-        </ui:insert>
+                              </center>
+                        </h:form>
+                        <!--</p:accordionPanel>-->
+                  </div>
+                  <br/>
+            </ui:insert>
 
-    </h:body>
+      </h:body>
 </html>

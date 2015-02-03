@@ -1,4 +1,4 @@
-package pl.teamformer.data;
+package pl.teamformer.model;
 
 import java.io.Serializable;
 import java.util.List;

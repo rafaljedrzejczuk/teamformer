@@ -32,6 +32,11 @@
             <redirect />
         </navigation-case>
         <navigation-case>
+            <from-outcome>topic</from-outcome>
+            <to-view-id>/admin/topic.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
             <from-outcome>account</from-outcome>
             <to-view-id>/admin/account.xhtml</to-view-id>
             <redirect />

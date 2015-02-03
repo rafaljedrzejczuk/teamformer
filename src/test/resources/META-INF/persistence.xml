@@ -3,11 +3,11 @@
     <persistence-unit name="TestPU" transaction-type="RESOURCE_LOCAL">
         
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>pl.teamformer.data.Account</class>
-        <class>pl.teamformer.data.Team</class>
-        <class>pl.teamformer.data.UserGroup</class>
-        <class>pl.teamformer.forum.Post</class>
-        <class>pl.teamformer.forum.Topic</class>
+        <class>pl.teamformer.model.Account</class>
+        <class>pl.teamformer.model.Team</class>
+        <class>pl.teamformer.model.UserGroup</class>
+        <class>pl.teamformer.model.Post</class>
+        <class>pl.teamformer.model.Topic</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         
         <properties>

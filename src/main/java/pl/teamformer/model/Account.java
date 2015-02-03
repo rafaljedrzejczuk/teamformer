@@ -1,4 +1,4 @@
-package pl.teamformer.data;
+package pl.teamformer.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,9 +19,9 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
@@ -70,10 +70,10 @@ public class Account implements Serializable {
         @Column(name = "WARN_LEVEL")
         private Integer warn;
 
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         private final Date dateAdded;
 
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         private Date lastVisited;
 
         @Enumerated(EnumType.STRING)
@@ -95,10 +95,10 @@ public class Account implements Serializable {
                 this.dateAdded = new Date();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Account(String login, String password, String email) {
-                this.login = login;
-                this.password = password;
-                this.email = email;
+        public Account(Account acc) {
+                this.login = acc.login;
+                this.password = acc.password;
+                this.email = acc.email;
                 this.avatarURL = "";
 
                 this.actions = 6;
@@ -156,12 +156,20 @@ public class Account implements Serializable {
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
         public enum Team_Position {
 
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                GK, DEF, MID, AT,
-                ALL;
+                GK("Goalkeeper"), DEF("Defense"), MID("Middle"), AT("Attack"),
+                ALL("All-Around");
+                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+                Team_Position(String label){
+                        this.label = label;
+                        
+                }
+                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+                @Getter
+                @Setter
+                private String label;
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

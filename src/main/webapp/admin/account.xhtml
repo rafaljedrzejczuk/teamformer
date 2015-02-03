@@ -16,16 +16,16 @@
                 <center>
                     <h:form>
 
-                        <p:panel header="Konto użtkownika #{loggedBean.selectedAccount.login}">
+                        <p:panel header="Konto użtkownika #{accountShowBean.selectedAccount.login}">
                             <h:panelGrid class="topicimage" columns="1" cellpadding="5">
-                                <p:outputLabel value="#{loggedBean.selectedAccount.group}" />
-                                <p:outputLabel value="Last visit: #{loggedBean.selectedAccount.lastVisited}" />
-                                <img src="#{loggedBean.selectedAccount.avatarURL}" alt="/avatar/defaultavatar.gif" style="width:200px;height:200px" />
-                                <p:outputLabel value="#{loggedBean.selectedAccount.login}" />
+                                <p:outputLabel value="#{accountShowBean.selectedAccount.group}" />
+                                <p:outputLabel value="Last visit: #{accountShowBean.selectedAccount.lastVisited}" />
+                                <img src="#{accountShowBean.selectedAccount.avatarURL}" alt="Avatar Not Found!" style="width:200px;height:200px" />
+                                <p:outputLabel value="#{accountShowBean.selectedAccount.login}" />
                             </h:panelGrid>>
                             
                             <h:column class="topictitle">
-                                <p:outputLabel value="#{loggedBean.selectedAccount.dateAdded}" />
+                                <p:outputLabel value="#{accountShowBean.selectedAccount.dateAdded}" />
                             </h:column>
                         </p:panel>
 

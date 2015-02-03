@@ -15,22 +15,22 @@
                 <p:focus for="j_username"/>
                 <p:panel header="Log In">
                     <form method="post" accept-charset="UTF-8" action="j_security_check">
-                        <h:panelGrid columns="3" cellpadding="5">
-                            <h:outputLabel id="login" value="Login:" />
-                            <p:inputText value="#{j_username}" id="j_username" required="true" validatorMessage="Co najmniej 4 znaki, balwanie!" 
-                                         requiredMessage="Tutaj musisz potwierdzić swoje sekretne hasło!"/>
-                            <p:message for="login" />
+                        <center>
+                            <h:panelGrid columns="3" cellpadding="5">
+                                <h:outputLabel id="login" value="Login:" />
+                                <p:inputText value="#{j_username}" id="j_username" required="true" validatorMessage="Co najmniej 4 znaki, balwanie!" 
+                                             requiredMessage="Tutaj musisz potwierdzić swoje sekretne hasło!"/>
+                                <p:message for="login" />
 
-                            <h:outputLabel id="password" value="Password:" />
-                            <p:password value="#{j_password}" id="j_password" required="true" validatorMessage="Co najmniej 6 znaków, czubku!" 
-                                        requiredMessage="Wymagane hasło!"/>
-                            <p:message for="password" />
-
-                            <p:outputLabel value="" /> 
+                                <h:outputLabel id="password" value="Password:" />
+                                <p:password value="#{j_password}" id="j_password" required="true" validatorMessage="Co najmniej 6 znaków, czubku!" 
+                                            requiredMessage="Wymagane hasło!"/>
+                                <p:message for="password" />
+                            </h:panelGrid>
                             <h:form>
                                 <p:commandButton value="Login" type="submit" ajax="false"/>
                             </h:form>
-                        </h:panelGrid>
+                        </center>
                     </form>
                 </p:panel>
 

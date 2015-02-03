@@ -5,60 +5,76 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <h:outputScript name="/javascript/backgroundflow.js" />
-        <h:outputScript name="/javascript/fadein.js" />
-        <h:outputScript name="/javascript/fadeout.js" />
+            <h:outputScript name="/javascript/backgroundflow.js" />
+            <h:outputScript name="/javascript/fadein.js" />
+            <h:outputScript name="/javascript/fadeout.js" />
 
-        <h:outputStylesheet name="/css/default.css"/>
-        <h:outputStylesheet name="/css/cssLayout.css"/>
-        <title>TeamFormer Forum</title>
-    </h:head>
+            <h:outputStylesheet name="/css/default.css"/>
+            <h:outputStylesheet name="/css/cssLayout.css"/>
+            <title>TeamFormer Forum</title>
+      </h:head>
 
-    <h:body>
+      <h:body>
 
-        <div id="top" class="headerimage">
+            <div id="top" class="headerimage">
+                  <h:form>
+                        <ui:insert name="top"><h1>TeamFormer</h1></ui:insert>
+                        <p:commandButton id="home" value="Home" icon="ui-icon-home" action="home" ajax="false"/>
+                        <p:commandButton id="chat" value="Chat" icon="ui-icon-comment" action="chat"/>
+                        <p:commandButton id="account" value="Your Account" icon="ui-icon-person" action="account"/>
+                        <p:commandButton id="account_set" value="Account Settings" icon="ui-icon-wrench" action="account_set"/>
+                        <p:commandButton id="search" value="Search" icon="ui-icon-search" action="home"/>
+                        <p:commandButton id="logout" value="Wyloguj, #{loggedBean.name}" icon="ui-icon-power" 
+                                         action="#{loggedBean.logOut()}"/>
+                  </h:form>
+            </div>
+
+            <!--<p:messages id="messages" autoUpdate="true" globalOnly="true" closable="true" showSummary="false" showDetail="true"/>-->
+
+            <div id="content" class="center_content">
+                  <ui:insert name="content">Content</ui:insert>
+            </div>
+
+            <div id="bottom">
+                  <h:form>
+                        <p:panel header="Powered by Glassfish &amp; Netbeans!" collapsed="true"/>
+                  </h:form>
+            </div>
+
+            <!-- Active Accounts -->
             <h:form>
-                <ui:insert name="top"><h1>TeamFormer</h1></ui:insert>
-                <p:commandButton id="home" value="Home" icon="ui-icon-home" action="home" ajax="false"/>
-                <p:commandButton id="chat" value="Chat" icon="ui-icon-comment" action="chat"/>
-                <p:commandButton id="account" value="Your Account" icon="ui-icon-person" action="account"
-                                 actionListener="#{loggedBean.setSelectedAccount(loggedBean.account)}"/>
-                <p:commandButton id="account_set" value="Account Settings" icon="ui-icon-wrench" action="account_set"/>
-                <p:commandButton id="search" value="Search" icon="ui-icon-home" action="home"/>
-                <p:commandButton id="logout" value="Wyloguj, #{loggedBean.name}" icon="ui-icon-search" 
-                                 action="#{loggedBean.logOut()}"/>
+                  <p:dialog hideEffect="puff" style="opacity: 0.8;" header="Active Users" minHeight="150"
+                            width="180" height="200" position="right,bottom" visible="true">
+
+                        <p:scrollPanel id="active_accounts" mode="native">
+                              <p:dataTable id="messages" value="#{accountDictionaryBean.activeAccounts}" var="account">
+                                    <p:column class="message">
+                                          <h:outputText value="#{account.login}" style="font-weight: bold; color: palevioletred; " />
+                                    </p:column>
+                              </p:dataTable>
+                        </p:scrollPanel>  
+                        <p:poll interval="1" update="active_accounts" />
+
+                  </p:dialog>
             </h:form>
-        </div>
-
-        <!--<p:messages id="messages" autoUpdate="true" globalOnly="true" closable="true" showSummary="false" showDetail="true"/>-->
-
-        <div id="content" class="center_content">
-            <ui:insert name="content">Content</ui:insert>
-        </div>
-
-        <div id="bottom">
+            
+            <!-- IDLE - SESSION CHEKCER --> 
             <h:form>
-                <p:panel header="Powered by Glassfish &amp; Netbeans!" collapsed="true"/>
+                  <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
+
+                  <!-- 10 mins -->
+                  <p:idleMonitor timeout="600000">
+                        <p:ajax event="idle" listener="#{loggedBean.logOut()}" update="messagesIdle" />
+                        <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
+                  </p:idleMonitor>
             </h:form>
-        </div>
 
-        <!-- IDLE - SESSION CHEKCER --> 
-        <h:form>
-            <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
-
-            <!-- 10 mins -->
-            <p:idleMonitor timeout="600000">
-                <p:ajax event="idle" listener="#{loggedBean.logOut()}" update="messagesIdle" />
-                <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
-            </p:idleMonitor>
-        </h:form>
-
-        <!-- CHECKS IF USER WAS LOGGED OUT FROM ANOTHER VIEW -->
-        <h:form>
-            <p:poll interval="1" listener="#{loggedBean.ifLoggedIn()}" />
-        </h:form>
-    </h:body>
+            <!-- CHECKS IF USER WAS LOGGED OUT FROM ANOTHER VIEW -->
+            <h:form>
+                  <p:poll interval="60" listener="#{loggedBean.ifLoggedIn()}"/>
+            </h:form>
+      </h:body>
 </html>

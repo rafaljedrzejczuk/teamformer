@@ -17,26 +17,27 @@
                 <center>
                     <h:form>
 
-                        <p:panel header="Nowy temat w kategorii #{loggedBean.daoTP.category.toStringCapitalized()}">
+                        <p:panel header="Nowy temat w kategorii #{topicBean.selectedTopic.category.toStringCapitalized()}">
                             <h:panelGrid columns='1'>
                                 <p:message for="title" style="margin-top: 10px"/>
                                 <p:inplace id="basic" effect="slide">
 
-                                    <p:inputText id="title" value="#{loggedBean.daoTP.title}" required="true" style="width: 600px"
-                                                 requiredMessage="Nie podałes tematu!" validatorMessage="Co najmniej 12 znaków, max 30, balwanie!" >
-                                        <f:validateLength minimum="12" maximum="30" />
+                                    <p:inputText id="title" value="#{topicBean.selectedTopic.title}" required="true" style="width: 600px"
+                                                 requiredMessage="Nie podałes tematu!" validatorMessage="Co najmniej 12 znaków, max 200, balwanie!" >
+                                        <f:validateLength minimum="12" maximum="200" />
                                     </p:inputText>
 
                                     <br/>
                                     <p:message for="editor" style="margin-top: 10px;"/>
-                                    <p:editor  id="editor" widgetVar="editorWidget" value="#{loggedBean.daoTP.text}" required="true" width="600"
-                                               requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 255 znaków, patafianie!">
-                                        <f:validateLength minimum="10" maximum="255" />
+                                    <p:editor  id="editor" widgetVar="editorWidget" value="#{postBean.post.text}" required="true" width="600"
+                                               requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 1000 znaków, patafianie!">
+                                        <f:validateLength minimum="10" maximum="1000" />
                                     </p:editor>
 
                                 </p:inplace>
                                 <br/>
-                                <p:commandButton  id="submit" value="Dodaj wątek" process="title, editor, @this" action="#{loggedBean.addTopic()}" update="@form" />
+                                <p:commandButton  id="submit" value="Dodaj wątek" process="title, editor, @this" 
+                                                  actionListener="#{topicBean.addTopic()}" action="#{postBean.addPost()}" update="@form" />
                             </h:panelGrid>
                         </p:panel>
 

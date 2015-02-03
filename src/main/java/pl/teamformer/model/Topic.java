@@ -1,4 +1,4 @@
-package pl.teamformer.forum;
+package pl.teamformer.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,7 +24,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import pl.teamformer.data.Account;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
@@ -57,27 +56,29 @@ public class Topic implements Serializable {
         @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTopic")
         private List<Post> posts = new ArrayList();
 
-        @Temporal(value = TemporalType.DATE)
+        @Temporal(value = TemporalType.TIMESTAMP)
         private final Date dateAdded;
 
-        @Temporal(value = TemporalType.TIME)
+        @Temporal(value = TemporalType.TIMESTAMP)
         private final Date hourAdded;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Topic() {
+                this.title = "Tytuł";
+                
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic(String title, String text, Account account, Category category) {
+        public Topic(Topic t, Account account) {
                 System.out.println("Topic creating in process..");
 
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
-                this.title = title;
-                this.category = category;
+                this.title = t.title;
+                this.category = t.category;
                 this.idOwner = account;
 
-                this.posts.add(new Post(text, account, this));
+//                this.posts.add(new Post(p.getText(), account, this));
         }
         public String getTopicOwner() {
                 return idOwner.getLogin();

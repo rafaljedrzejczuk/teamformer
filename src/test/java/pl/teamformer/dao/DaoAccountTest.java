@@ -11,12 +11,12 @@
 //import org.junit.AfterClass;
 //import org.junit.Test;
 //
-//import pl.teamformer.data.Account;
+//import pl.teamformer.model.Account;
+//import pl.teamformer.model.Team;
+//import static pl.teamformer.tools.MyOut.myOut;
 //
 //import static org.junit.Assert.*;
 //import static org.hamcrest.CoreMatchers.*;
-//import pl.teamformer.data.Team;
-//import static pl.teamformer.tools.MyOut.myOut;
 //
 //public class DaoAccountTest {
 //

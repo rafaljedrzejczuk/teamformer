@@ -1,4 +1,4 @@
-package pl.teamformer.forum;
+package pl.teamformer.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -19,7 +19,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
-import pl.teamformer.data.Account;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
@@ -56,6 +55,8 @@ public class Post implements Serializable {
         private Date hourAdded;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Post() {
+                this.text = "Treść";
+                
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
         }

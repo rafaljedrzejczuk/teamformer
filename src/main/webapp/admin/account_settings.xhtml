@@ -3,37 +3,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Home/Add Topic to </title>
-        <link rel="stylesheet" type="text/css" href="/WEB-INF/styles/style.css"/>
-    </h:head>
-    <h:body>
-        <ui:composition template="/WEB-INF/templates/template_admin.xhtml">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      <h:head>
+            <title>Home/Add Topic to </title>
+            <link rel="stylesheet" type="text/css" href="/WEB-INF/styles/style.css"/>
+      </h:head>
+      <h:body>
+            <ui:composition template="/WEB-INF/templates/template_admin.xhtml">
 
-            <ui:define name="content">
-                <!-- Topic's posts -->
-                <center>
-                    <h:form>
+                  <ui:define name="content">
+                        <!-- Topic's posts -->
+                        <center>
+                              <h:form>
 
-                        <p:panel header="Nowy temat w kategorii #{loggedBean.daoTP.category.toStringCapitalized()}">
-                            <h:panelGrid columns='2'>
+                                    <p:panel id="panel" header="Account Settings">
+                                          <h:panelGrid columns='3'>
 
-                                <h:outputLabel id="imageurl" value="Avatar URL: " />
-                                <p:inputText value="#{loggedBean.account.avatarURL}" required="true" />
-                                <p:message for="imageurl" />
+                                                <h:outputLabel for="pwd1" value="Password:" />
+                                                <p:password id="pwd1" value="#{accountSettingsBean.password}" match="pwd2" label="Password 1" 
+                                                            validatorMessage="Co najmniej 6 znaków, czubku!" feedback="true"  inline="TRUE" />
+                                                <p:message for="pwd1" />
 
-                                <h:form>
-                                    <p:commandButton value="Save" type="submit" action="#{messagesBean.showMessageInfo('Opcje użytkownika zapisane!')}"/>
-                                </h:form>
-                            </h:panelGrid>
-                        </p:panel>
+                                                <h:outputLabel for="pwd2" value="Confirm Password:" />
+                                                <p:password id="pwd2" value="#{accountSettingsBean.password}" label="Password 2" requiredMessage="Tutaj musisz potwierdzić swoje sekretne hasło!" />
+                                                <p:message for="pwd2"  />
 
-                    </h:form>
-                </center>
-            </ui:define>
+                                                <h:outputLabel id="imageurl" value="Avatar URL: " />
+                                                <p:inputText value="#{accountSettingsBean.avatarURL}" />
+                                                <p:message for="imageurl" />
 
-        </ui:composition>
-    </h:body>
+                                                <h:outputLabel id="positions" value="Your Preffered Position: " />
+                                                <h:selectOneMenu value="#{accountSettingsBean.position}" >
+                                                      <f:selectItem itemValue="#{loggedBean.account.teamPosition}" 
+                                                                    itemLabel="#{loggedBean.account.teamPosition.label} (actual)"/>
+                                                      <!--<p:separator/>-->
+                                                      <f:selectItems value="#{accountSettingsBean.teamPositions}" var="position"
+                                                                     itemValue="#{position}" itemLabel="#{position.label}" />
+                                                </h:selectOneMenu>
+                                                <p:message for="positions" />
+
+                                          </h:panelGrid>
+
+                                          <h:form>
+                                                <p:commandButton value="Save!" update="@form" ajax="false"
+                                                                 actionListener="#{accountSettingsBean.save()}" action="#{messagesBean.showMessageInfo('Opcje użytkownika zapisane!')}"/>
+                                          </h:form>
+
+                                    </p:panel>
+
+                              </h:form>
+                        </center>
+                  </ui:define>
+
+            </ui:composition>
+      </h:body>
 </html>
 
