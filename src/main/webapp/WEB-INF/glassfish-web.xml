@@ -3,7 +3,7 @@
 <glassfish-web-app error-url="">
   <parameter-encoding default-charset="UTF-8"/>
   <security-role-mapping>
-    <role-name>ADMIN</role-name>
+    <role-name>ADMIN_ROLE</role-name>
     <group-name>${user.group}</group-name>
   </security-role-mapping>
   <class-loader delegate="true"/>

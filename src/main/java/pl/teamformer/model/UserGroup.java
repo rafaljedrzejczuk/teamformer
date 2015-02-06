@@ -23,7 +23,7 @@ public class UserGroup implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "USERGROUP_GEN")
-        @Column(name = "ID")
+        @Column(name = "ID", nullable = false)
         private Long id;
 
         @Column(name = "LOGIN")

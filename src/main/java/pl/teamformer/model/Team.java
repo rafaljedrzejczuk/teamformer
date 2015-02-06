@@ -30,7 +30,6 @@ public class Team implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "TEAM_GEN")
-        @NotNull
         @Column(name = "ID")
         private Long id;
 
@@ -38,7 +37,7 @@ public class Team implements Serializable {
         @Column(name = "NAME", length = 30, unique = true, nullable = false)
         private String name;
 
-        @OneToMany(mappedBy = "idTeam",cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "idTeam", cascade = CascadeType.ALL)
         private List<Account> idOwner;
 
         @Column(name = "RANK")

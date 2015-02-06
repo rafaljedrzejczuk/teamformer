@@ -29,7 +29,7 @@
 
                                     <br/>
                                     <p:message for="editor" style="margin-top: 10px;"/>
-                                    <p:editor  id="editor" widgetVar="editorWidget" value="#{postBean.post.text}" required="true" width="600"
+                                    <p:editor  id="editor" widgetVar="editorWidget" value="#{topicBean.firstPost.text}" required="true" width="600"
                                                requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 1000 znaków, patafianie!">
                                         <f:validateLength minimum="10" maximum="1000" />
                                     </p:editor>
@@ -37,7 +37,7 @@
                                 </p:inplace>
                                 <br/>
                                 <p:commandButton  id="submit" value="Dodaj wątek" process="title, editor, @this" 
-                                                  actionListener="#{topicBean.addTopic()}" action="#{postBean.addPost()}" update="@form" />
+                                                  actionListener="#{topicBean.addTopic()}" update="@form" />
                             </h:panelGrid>
                         </p:panel>
 

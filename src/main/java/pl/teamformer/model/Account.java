@@ -38,7 +38,6 @@ public class Account implements Serializable {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "ACCOUNT_GEN")
-        @NotNull
         @Column(name = "ID")
         private Long id;
 

@@ -19,13 +19,12 @@
             <property name="javax.persistence.jdbc.password" value=""/>
             <!-- IMPORTING SQL AS TEXT STATEMENTS - SEQUENCES, INSERTIONS etc.. -->
             <property name="javax.persistence.sql-load-script-source" value="import.sql"/>
-            <!-- model creation have to be done via javax.persistence, not hibernate/eclipselink - otherwise import doesn't works -->
+            <!-- model creation have to be done via javax.persistence, not hibernate/eclipselink - otherwise import doesn't work -->
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
             <property name="javax.persistence.schema-generation.drop-source" value="metadata"/>
             
-            
-            <!-- THE H2 LOGS INFO PROCESS -->
+            <!-- LOGS INFO PROCESS -->
 <!--            <property name="eclipselink.logging.level" value="SEVERE"/>
             <property name="eclipselink.logging.level" value="FINEST" />
             <property name="eclipselink.logging.level.sql" value="SEVERE"/>

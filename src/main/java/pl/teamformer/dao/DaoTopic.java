@@ -22,12 +22,12 @@ public class DaoTopic {
         @Getter(AccessLevel.NONE)
         private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic addTopic(Topic topic, Account account) {
+        public Topic addTopic(Topic topic, Post post, Account account) {
                 System.out.println("First Post is created in Topic Class");
                 Topic t = new Topic(topic, account);
-                System.out.println("Merging a topic and first post..");
-                System.out.println(t.getCategory().name());
-                
+                t.addPost(new Post(post.getText(), account, topic));
+                System.out.println("Merging a topic and first post to " + t.getCategory().name() + "..");
+
                 return entityManager.merge(t);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

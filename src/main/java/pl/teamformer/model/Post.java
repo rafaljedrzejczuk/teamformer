@@ -17,7 +17,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 import lombok.Data;
 import pl.teamformer.tools.DateFormatters;
 
@@ -33,7 +32,6 @@ public class Post implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO, generator = "POST_GEN")
-        @NotNull
         @Column(name = "ID")
         private Long id;
 
@@ -56,7 +54,7 @@ public class Post implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Post() {
                 this.text = "Treść";
-                
+
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
         }

@@ -252,22 +252,22 @@
       <!-- PROFILES -->
       <profiles> 
             <profile> 
-                  <id>dev</id>
+                  <id>dev-derby</id> <!-- Działa na bazie danych derby -->
             
                   <properties>
-                        <jta.myjdbc>jdbc/nextsample</jta.myjdbc>
                         <user.group>ADMIN</user.group>
-                        <realm.name>MyJDBCRealm2</realm.name>
+                        <jdbc.resource>jdbc/sample</jdbc.resource>
+                        <realm.name>MyJDBCRealm</realm.name>
                   </properties> 
             </profile>
         
             <profile>
-                  <id>main</id>
+                  <id>main-mysql</id> <!-- Działa na bazie danych MySQL -->
             
                   <properties>
-                        <jta.myjdbc>jdbc/sample</jta.myjdbc>
                         <user.group>ADMIN</user.group>
-                        <realm.name>MyJDBCRealm</realm.name>
+                        <jdbc.resource>jdbc/mysql</jdbc.resource>
+                        <realm.name>MySQLRealm</realm.name>
                   </properties>
             
                   <activation>

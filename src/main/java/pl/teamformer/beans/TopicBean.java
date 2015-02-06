@@ -21,6 +21,7 @@ public class TopicBean implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         private Topic selectedTopic = new Topic();
+        private Post firstPost = new Post();
 
         @Inject
         @Getter(AccessLevel.NONE)
@@ -45,7 +46,7 @@ public class TopicBean implements Serializable {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addTopic() {
-                selectedTopic = daoTopic.addTopic(selectedTopic, lb.getAccount());
+                selectedTopic = daoTopic.addTopic(selectedTopic, firstPost, lb.getAccount());
                 Messages.redirectWithMessage("admin/topic.xhtml", "Utworzono nowy wątek!");
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
