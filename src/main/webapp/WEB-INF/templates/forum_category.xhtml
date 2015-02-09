@@ -28,7 +28,7 @@
                                     </p:column>
 
                                     <p:column class="topicinfo" headerText="Last Post" >
-                                        <p:commandButton action="#{topicBean.removeTopic(topic)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
+                                        <p:commandButton action="#{topicBean.removeTopic(topic)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN_ROLE')}" ajax="false" />
                                         <br/>
                                         <h:outputText value="#{topic.newestPost.dateAddedToString}" />
                                         <p:separator />

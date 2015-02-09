@@ -54,6 +54,11 @@ public class TopicBean implements Serializable {
                 daoTopic.removeTopic(t);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        public String removeTopic() {
+                daoTopic.removeTopic(selectedTopic);
+                return "home";
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void toTopic(Topic t) {
                 setSelectedTopic(t);
                 daoPost.getPostsByTopic(t);

@@ -30,7 +30,8 @@ import pl.teamformer.tools.DateFormatters;
 @SequenceGenerator(allocationSize = 1, name = "TOPIC_GEN", sequenceName = "TOPIC_ID")
 @NamedQueries({
         @NamedQuery(name = "Topic.findAll", query = "SELECT to FROM Topic to"),
-        @NamedQuery(name = "Topic.findByCategory", query = "SELECT to FROM Topic to WHERE to.category = :category")})
+        @NamedQuery(name = "Topic.findByCategory", query = "SELECT to FROM Topic to WHERE to.category = :category"),
+        @NamedQuery(name = "Topic.findById", query = "SELECT to FROM Topic to WHERE to.id = :id")})
 public class Topic implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -45,11 +46,11 @@ public class Topic implements Serializable {
         @Enumerated(EnumType.STRING)
         private Category category;
 
-        @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-        @JoinColumn(name = "ID_OWNER", referencedColumnName = "ID")//, nullable = false)
+        @OneToOne(cascade = {CascadeType.MERGE})
+        @JoinColumn(name = "ID_OWNER", referencedColumnName = "ID", nullable = false)
         private Account idOwner;
 
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "idTopic")
+        @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "idTopic")
         private List<Post> posts = new ArrayList();
 
         @Temporal(value = TemporalType.TIMESTAMP)
@@ -60,22 +61,11 @@ public class Topic implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Topic() {
                 this.title = "Tytuł";
-                
+
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic(Topic t, Account account) {
-                System.out.println("Topic creating in process..");
-
-                this.dateAdded = new Date();
-                this.hourAdded = new Date();
-                this.title = t.title;
-                this.category = t.category;
-                this.idOwner = account;
-
-//                this.posts.add(new Post(p.getText(), account, this));
-        }
         public String getTopicOwner() {
                 return idOwner.getLogin();
         }
@@ -104,6 +94,11 @@ public class Topic implements Serializable {
                 int hash = 0;
                 hash += (id != null ? id.hashCode() : 0);
                 return hash;
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        @Override
+        public String toString() {
+                return this.title;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 

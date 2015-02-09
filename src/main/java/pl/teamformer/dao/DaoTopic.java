@@ -22,13 +22,16 @@ public class DaoTopic {
         @Getter(AccessLevel.NONE)
         private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic addTopic(Topic topic, Post post, Account account) {
+        public Topic addTopic(Topic t, Post p, Account account) {
                 System.out.println("First Post is created in Topic Class");
-                Topic t = new Topic(topic, account);
-                t.addPost(new Post(post.getText(), account, topic));
+                t.setIdOwner(account);
+                p.setIdOwner(account);
+                p.setIdTopic(t);
+                t.addPost(p);
                 System.out.println("Merging a topic and first post to " + t.getCategory().name() + "..");
 
-                return entityManager.merge(t);
+                entityManager.persist(t);
+                return t;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Topic> getTopics() {
@@ -73,7 +76,7 @@ public class DaoTopic {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removeTopic(Topic t) {
-                Topic toRemove = entityManager.merge(t);
+                Topic toRemove  = (Topic) entityManager.createNamedQuery("Topic.findById").setParameter("id", t.getId()).getSingleResult();
                 System.out.println("Removing a topic..");
                 entityManager.remove(toRemove);
         }

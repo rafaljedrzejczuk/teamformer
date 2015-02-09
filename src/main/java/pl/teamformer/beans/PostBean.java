@@ -23,7 +23,7 @@ public class PostBean {
         private TopicBean tb;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addPost() {
-                dao.addPost(lb.getAccount(), tb.getSelectedTopic(), post.getText());
+                dao.addPost(lb.getAccount(), tb.getSelectedTopic(), post);
                 post = new Post();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

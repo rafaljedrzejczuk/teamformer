@@ -34,7 +34,8 @@
                                                       </p:column>
 
                                                       <p:column class="postinfo" headerText="Added">
-                                                            <p:commandButton action="#{postBean.removePost(post)}" icon="ui-icon-trash" rendered="#{p:ifGranted('ADMIN')}" ajax="false" />
+                                                            <p:commandButton action="#{postBean.removePost(post)}" icon="ui-icon-trash" 
+                                                                             rendered="#{p:ifGranted('ADMIN_ROLE')}" ajax="false" />
                                                             <br/>
                                                             <h:outputText value="#{post.dateAddedToString}" />
                                                       </p:column>
@@ -42,11 +43,11 @@
                                                 </p:dataTable>
                                                 <br/>
                                                 <p:editor  id="editor" widgetVar="editorWidget" value="#{postBean.post.text}" required="true" width="600"
-                                                           requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Co najmniej 10 znaków lub post przekracza 255 znaków, patafianie!">
-                                                      <f:validateLength minimum="10" maximum="1000" />
+                                                           requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Post przekracza 1000 znaków, patafianie!">
+                                                      <f:validateLength maximum="1000" />
                                                 </p:editor>
                                                 <p:message for="editor" style="margin-top: 10px;"/>
-                                                <p:commandButton id="submit" value="Dodaj post" process="editor, @this, news" action="#{postBean.addPost()}" update="@form, news" ajax="false"/>
+                                                <p:commandButton id="submit" value="Dodaj post" action="#{postBean.addPost()}" ajax="false"/>
                                           </h:form>
 
                                     </p:panel>

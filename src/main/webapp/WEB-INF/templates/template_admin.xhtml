@@ -48,7 +48,6 @@
             <h:form>
                   <p:dialog hideEffect="puff" style="opacity: 0.8;" header="Active Users" minHeight="150"
                             width="180" height="200" position="right,bottom" visible="true">
-
                         <p:scrollPanel id="active_accounts" mode="native">
                               <p:dataTable id="messages" value="#{accountDictionaryBean.activeAccounts}" var="account">
                                     <p:column class="message">
@@ -57,10 +56,9 @@
                               </p:dataTable>
                         </p:scrollPanel>  
                         <p:poll interval="1" update="active_accounts" />
-
                   </p:dialog>
             </h:form>
-            
+
             <!-- IDLE - SESSION CHEKCER --> 
             <h:form>
                   <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />

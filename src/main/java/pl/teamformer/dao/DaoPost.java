@@ -16,27 +16,27 @@ public class DaoPost {
         @PersistenceContext
         private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void addPost(Account account, Topic topic, String text) {
-                Post p = new Post(text, account, topic);
+        public void addPost(Account account, Topic topic, Post p) {
+                p.setIdOwner(account);
+                p.setIdTopic(topic);
                 System.out.println("1");
                 topic.addPost(p);
                 System.out.println("2");
-                getEntityManager().merge(topic);
+                getEntityManager().persist(p);
                 System.out.println("3");
                 getPostsByTopic(topic);
                 System.out.println("4");
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removePost(Topic topic, Post post) {
-                Post toRemove = getEntityManager().merge(post);
+                Post toRemove  = (Post) entityManager.createNamedQuery("Post.findById").setParameter("id", post.getId()).getSingleResult();
                 getEntityManager().remove(toRemove);
                 getPostsByTopic(topic);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        //Do usunięcia, addPost juz 'aktualizuje' zawartosc tematu, a topic.xhtml pobiera posty metoda selTopic.getPosts()
         public void getPostsByTopic(Topic t) {
                 if (t != null)
-                        t.setPosts(getEntityManager().createNamedQuery("Post.findByTopicID").setParameter("idTopic", t).getResultList());
+                        t.setPosts(getEntityManager().createNamedQuery("Post.findByTopicId").setParameter("idTopic", t).getResultList());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

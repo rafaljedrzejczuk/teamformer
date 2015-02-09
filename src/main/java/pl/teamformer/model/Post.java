@@ -26,7 +26,8 @@ import pl.teamformer.tools.DateFormatters;
 @SequenceGenerator(allocationSize = 1, name = "POST_GEN", sequenceName = "POST_ID")
 @NamedQueries({
         @NamedQuery(name = "Post.findAll", query = "SELECT po FROM Post po"),
-        @NamedQuery(name = "Post.findByTopicID", query = "SELECT po FROM Post po WHERE po.idTopic = :idTopic")})
+        @NamedQuery(name = "Post.findByTopicId", query = "SELECT po FROM Post po WHERE po.idTopic = :idTopic"),
+        @NamedQuery(name = "Post.findById", query = "SELECT po FROM Post po WHERE po.id = :id")})
 public class Post implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -38,11 +39,11 @@ public class Post implements Serializable {
         @Column(name = "TEXT", length = 255)
         private String text;
 
-        @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @OneToOne(cascade = {CascadeType.MERGE})
         @JoinColumn(name = "ID_OWNER", referencedColumnName = "ID", nullable = false)
         private Account idOwner;
 
-        @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+        @ManyToOne(cascade = {CascadeType.MERGE})
         @JoinColumn(name = "ID_TOPIC", referencedColumnName = "ID", nullable = false)
         private Topic idTopic;
 
@@ -57,15 +58,6 @@ public class Post implements Serializable {
 
                 this.dateAdded = new Date();
                 this.hourAdded = new Date();
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Post(String text, Account account, Topic topic) {
-                this.dateAdded = new Date();
-                this.hourAdded = new Date();
-
-                this.text = text;
-                this.idOwner = account;
-                this.idTopic = topic;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
