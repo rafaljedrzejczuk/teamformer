@@ -263,12 +263,22 @@
             </profile>
         
             <profile>
-                  <id>main-mysql</id> <!-- Działa na bazie danych MySQL -->
+                  <id>dev-mysql</id> <!-- Działa na bazie danych MySQL -->
             
                   <properties>
                         <user.group>ADMIN</user.group>
                         <jdbc.resource>jdbc/mysql</jdbc.resource>
                         <realm.name>MySQLRealm</realm.name>
+                  </properties>
+            </profile>
+            
+            <profile>
+                  <id>default-oracle</id> <!-- Działa na bazie danych Oracle -->
+            
+                  <properties>
+                        <user.group>ADMIN</user.group>
+                        <jdbc.resource>jdbc/oracle</jdbc.resource>
+                        <realm.name>OracleRealm</realm.name>
                   </properties>
             
                   <activation>
