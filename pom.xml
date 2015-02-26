@@ -5,7 +5,7 @@
       <modelVersion>4.0.0</modelVersion>
       <groupId>pl.teamformer</groupId>
       <artifactId>TeamFormerMVN</artifactId>
-      <version>1.91</version>
+      <version>1.92</version>
       <packaging>war</packaging>
       <name>TeamFormerMVN</name>
       <!-- PROPERTIES -->
@@ -257,9 +257,22 @@
             
                   <properties>
                         <user.group>ADMIN</user.group>
-                        <jdbc.resource>jdbc/sample</jdbc.resource>
+                        <jndi.name>jdbc/sample</jndi.name>
                         <realm.name>MyJDBCRealm</realm.name>
                   </properties> 
+
+                  <build>
+                        <plugins>
+                              <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-war-plugin</artifactId>
+                                    <version>2.2</version>
+                                    <configuration>
+                                          <classifier>derby</classifier>
+                                    </configuration>
+                              </plugin>
+                        </plugins>
+                  </build>
             </profile>
         
             <profile>
@@ -267,9 +280,22 @@
             
                   <properties>
                         <user.group>ADMIN</user.group>
-                        <jdbc.resource>jdbc/mysql</jdbc.resource>
+                        <jndi.name>jdbc/mysql</jndi.name>
                         <realm.name>MySQLRealm</realm.name>
                   </properties>
+
+                  <build>
+                        <plugins>
+                              <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-war-plugin</artifactId>
+                                    <version>2.2</version>
+                                    <configuration>
+                                          <classifier>mysql</classifier>
+                                    </configuration>
+                              </plugin>
+                        </plugins>
+                  </build>
             </profile>
             
             <profile>
@@ -277,10 +303,23 @@
             
                   <properties>
                         <user.group>ADMIN</user.group>
-                        <jdbc.resource>jdbc/oracle</jdbc.resource>
+                        <jndi.name>jdbc/oracle</jndi.name>
                         <realm.name>OracleRealm</realm.name>
                   </properties>
-            
+
+                  <build>
+                        <plugins>
+                              <plugin>
+                                    <groupId>org.apache.maven.plugins</groupId>
+                                    <artifactId>maven-war-plugin</artifactId>
+                                    <version>2.2</version>
+                                    <configuration>
+                                          <classifier>oracle</classifier>
+                                    </configuration>
+                              </plugin>
+                        </plugins>
+                  </build>
+                  
                   <activation>
                         <activeByDefault>true</activeByDefault>
                   </activation>
