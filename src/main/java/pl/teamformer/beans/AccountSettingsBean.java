@@ -8,7 +8,7 @@ import lombok.Data;
 import lombok.Getter;
 import pl.teamformer.dao.DaoAccount;
 import pl.teamformer.model.Account;
-import pl.teamformer.model.Account.Team_Position;
+import pl.teamformer.model.Account.TeamPosition;
 
 @Data
 @Named
@@ -19,7 +19,7 @@ public class AccountSettingsBean {
         private String avatarURL = "";
         private String password = "";
         private String email = "";
-        private Team_Position position;
+        private TeamPosition position;
         
         @Inject
         LoggedBean lb;
@@ -70,8 +70,8 @@ public class AccountSettingsBean {
                 a.setTeamPosition(position);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Team_Position[] getTeamPositions() {
-                return Team_Position.values();
+        public TeamPosition[] getTeamPositions() {
+                return TeamPosition.values();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

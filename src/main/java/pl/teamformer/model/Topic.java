@@ -1,11 +1,9 @@
 package pl.teamformer.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -13,35 +11,29 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
+@EqualsAndHashCode
 @Entity
-@Table(name = "TOPIC")
-@SequenceGenerator(allocationSize = 1, name = "TOPIC_GEN", sequenceName = "TOPIC_ID")
-@NamedQueries({
-        @NamedQuery(name = "Topic.findAll", query = "SELECT to FROM Topic to"),
-        @NamedQuery(name = "Topic.findByCategory", query = "SELECT to FROM Topic to WHERE to.category = :category"),
-        @NamedQuery(name = "Topic.findById", query = "SELECT to FROM Topic to WHERE to.id = :id")})
-public class Topic implements Serializable {
+@Table(schema = "topic")
+public class Topic extends AbstractEntity {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "TOPIC_GEN")
-        @Column(name = "ID")
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
-        @Column(name = "TITLE", nullable = false, length = 50)
-        private String title;
+        @NotNull
+        @Size(min = 5, max = 30)
+        private String title = "Title";
 
         @Enumerated(EnumType.STRING)
         private Category category;
@@ -53,25 +45,14 @@ public class Topic implements Serializable {
         @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "idTopic")
         private List<Post> posts = new ArrayList();
 
-        @Temporal(value = TemporalType.TIMESTAMP)
         private final Date dateAdded;
-
-        @Temporal(value = TemporalType.TIMESTAMP)
-        private final Date hourAdded;
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Topic() {
-                this.title = "Tytuł";
-
-                this.dateAdded = new Date();
-                this.hourAdded = new Date();
-        }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getTopicOwner() {
                 return idOwner.getLogin();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
-                return DateFormatters.SDF_DATE.format(dateAdded) + " at " + DateFormatters.SDF_HOUR.format(hourAdded);
+                return DateFormatters.SDF_DATE.format(dateAdded);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addPost(Post p) {
@@ -80,20 +61,6 @@ public class Topic implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Post getNewestPost() {
                 return (posts.isEmpty()) ? null : posts.get(posts.size() - 1);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Override
-        public boolean equals(Object other) {
-                if ((other instanceof Topic) && (id != null))
-                        return id.equals(((Topic) other).getId());
-                return other == this;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Override
-        public int hashCode() {
-                int hash = 0;
-                hash += (id != null ? id.hashCode() : 0);
-                return hash;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Override
@@ -108,10 +75,6 @@ public class Topic implements Serializable {
                 NEWS, TOURNAMENTS, FREEPLAY, RECRUITMENT,
                 COMMUNITY, RULES, TRASH;
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                public Category getNews() {
-                        return Category.NEWS;
-                }
-                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
                 @Override
                 public String toString() {
                         return this.name();
@@ -120,6 +83,7 @@ public class Topic implements Serializable {
                 public String toStringCapitalized() {
                         return this.name().substring(0, 1).toUpperCase() + this.name().substring(1).toLowerCase();
                 }
+                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

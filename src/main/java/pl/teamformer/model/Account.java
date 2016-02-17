@@ -1,6 +1,5 @@
 package pl.teamformer.model;
 
-import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,45 +11,39 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
+@EqualsAndHashCode
 @Entity
-@Table(name = "ACCOUNT")
-@SequenceGenerator(allocationSize = 1, name = "ACCOUNT_GEN", sequenceName = "ACCOUNT_ID")
-@NamedQueries({
-        @NamedQuery(name = "Account.findAll", query = "SELECT ac FROM Account ac"),
-        @NamedQuery(name = "Account.findByLogin", query = "SELECT ac FROM Account ac WHERE ac.login = :login")})
-public class Account implements Serializable {
+@Table(schema = "teamformer")
+public class Account extends AbstractEntity {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private static final long serialVersionUID = 1L;
-
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "ACCOUNT_GEN")
-        @Column(name = "ID")
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
-        @Column(name = "LOGIN", nullable = false, unique = true, length = 30)
+        @NotNull
+        @Column(nullable = false, unique = true, length = 30)
         private String login;
 
-        @Column(name = "PASSWORD", nullable = false)
+        @NotNull
+        @Column(nullable = false)
         private String password;
 
-        @Column(name = "EMAIL", nullable = false, unique = true)
+        @NotNull
+        @Column(nullable = false, unique = true)
         private String email;
-
-        @Column(name = "AVATAR_URL")
-        private String avatarURL;
 
         @Enumerated(EnumType.STRING)
         private Status status = Status.INACTIVATED;
@@ -60,68 +53,20 @@ public class Account implements Serializable {
         private Team idTeam;
 
         @Enumerated(EnumType.STRING)
-        private Team_Position teamPosition = Team_Position.ALL;
+        private TeamPosition teamPosition = TeamPosition.ALL;
 
-        @Enumerated(EnumType.STRING)
-        private Team_Rights teamRights = Team_Rights.FREE;
+        @NotNull
+        private Integer warn = 0;
 
-        @Column(name = "WARN_LEVEL")
-        private Integer warn;
-
+        @Setter(AccessLevel.NONE)
         @Temporal(value = TemporalType.TIMESTAMP)
-        private final Date dateAdded;
+        private final Date dateAdded = new Date();
 
-        @Temporal(value = TemporalType.TIMESTAMP)
-        private Date lastVisited;
-
-        @Enumerated(EnumType.STRING)
-        private Logged_Info loggedInfo = Logged_Info.LOGGED_OUT;
-
-        @Column(name = "AVAILABLE_ACTIONS")
-        private Integer actions;
-
-//        @OneToOne(cascade = CascadeType.ALL)
-//        @JoinColumn(name = "ID_USERGROUP", referencedColumnName = "ID")
-//        private final UserGroup idGroup;
-        @Column(name = "GROUPNAME")
-        private String group;
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Account() {
-                this.dateAdded = new Date();
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Account(Account acc) {
-                this.login = acc.login;
-                this.password = acc.password;
-                this.email = acc.email;
-                this.avatarURL = "";
-
-                this.actions = 6;
-                this.warn = 0;
-
-                this.dateAdded = new Date();
-                this.lastVisited = new Date();
-                this.group = "ADMIN";
-        }
+        @NotNull
+        private Integer actions = 10;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
-                if (dateAdded == null)
-                        return "null";
-                return DateFormatters.SDF_DATE.format(dateAdded.getTime());
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Override
-        public boolean equals(Object other) {
-                if ((other instanceof Account) && (id != null))
-                        return id.equals(((Account) other).getId());
-                return other == this;
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @Override
-        public int hashCode() {
-                int hash = 0;
-                hash += (id != null ? id.hashCode() : 0);
-                return hash;
+                return dateAdded == null ? "none" : DateFormatters.SDF_DATE.format(dateAdded.getTime());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
@@ -132,31 +77,14 @@ public class Account implements Serializable {
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
-        public enum Logged_Info {
-
-                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                LOGGED_IN, LOGGED_OUT;
-                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-
-        public enum Team_Rights {
+        public enum TeamPosition {
 
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                MEMBER, MODERATOR, ADMIN, FREE;
+                GK("Goalkeeper"), DEF("Defense"), MID("Middle"), AT("Attack"), ALL("All-Around");
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public enum Team_Position {
-
-                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                GK("Goalkeeper"), DEF("Defense"), MID("Middle"), AT("Attack"),
-                ALL("All-Around");
-                /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-                Team_Position(String label){
+                TeamPosition(String label) {
                         this.label = label;
-                        
+
                 }
                 /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
                 @Getter

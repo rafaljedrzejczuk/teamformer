@@ -5,47 +5,31 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import lombok.Data;
 import pl.teamformer.model.Account;
-import pl.teamformer.model.Team;
 import static pl.teamformer.tools.GenerateHash.generateHash;
 import pl.teamformer.tools.Messages;
 
-@Data
 @Stateless
 public class DaoAccount {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PersistenceContext
-        private EntityManager entityManager;
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PostConstruct
-        public void init() {
-                getAccounts();
-                getTeams();
-        }
+        private EntityManager em;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Account> getAccounts() {
-                return (List<Account>) getEntityManager().createNamedQuery("Account.findAll").getResultList();
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public List<Team> getTeams() {
-                return (List<Team>) getEntityManager().createNamedQuery("Team.findAll").getResultList();
+                return (List<Account>) em.createQuery("SELECT ac FROM Account ac WHERE ac.active = 1")
+                        .getResultList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean registerAccount(Account acc, boolean messaging) {
+                if (ifLoginOrEmailExists(acc, messaging))
+                        return false;
                 try {
-                        if (ifLoginOrEmailExists(acc, messaging))
-                                return false;
-
                         acc.setPassword(generateHash(acc.getPassword()));
-                        Account a = new Account(acc);
-                        entityManager.persist(a);
-
+                        em.persist(acc);
                         return true;
                 } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
                         Logger.getLogger(DaoAccount.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,9 +38,8 @@ public class DaoAccount {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removeAccount(Account a) {
-                Account toRemove = getEntityManager().merge(a);
                 System.out.println("Removing an account..");
-                getEntityManager().remove(toRemove);
+                em.remove(em.merge(a));
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public Account getAccountByLogin(String login) {
@@ -67,20 +50,19 @@ public class DaoAccount {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean ifLoginOrEmailExists(Account acc, boolean messaging) {
-                boolean outcome = false;
                 for (Account a : getAccounts()) {
                         if (a.getLogin().equals(acc.getLogin())) {
                                 if (messaging)
                                         Messages.showMessageError("Login *" + acc.getLogin() + "* jest już zajęty!");
-                                outcome = true;
+                                return true;
                         }
                         if (a.getEmail().equals(acc.getEmail())) {
                                 if (messaging)
                                         Messages.showMessageError("Na e-mail *" + acc.getEmail() + "* jest już zarejstrowane konto!");
-                                outcome = true;
+                                return true;
                         }
                 }
-                return outcome;
+                return false;
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean ifLoginExists(Account acc) {
