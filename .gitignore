@@ -1,3 +1,9 @@
-/target/
 *.*~
-*.swp
+*.*.swp
+target/
+/.nb-gradle/
+/build/
+.gradle/
+private/
+classes/
+.sonar/

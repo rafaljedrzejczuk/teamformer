@@ -77,9 +77,6 @@ public class Account implements Serializable {
         @Enumerated(EnumType.STRING)
         private Logged_Info loggedInfo = Logged_Info.LOGGED_OUT;
 
-        @Column(name = "POSTS")
-        private Integer postsCount;
-
         @Column(name = "AVAILABLE_ACTIONS")
         private Integer actions;
 
@@ -100,14 +97,11 @@ public class Account implements Serializable {
                 this.avatarURL = "";
 
                 this.actions = 6;
-                this.postsCount = 0;
                 this.warn = 0;
 
                 this.dateAdded = new Date();
                 this.lastVisited = new Date();
                 this.group = "ADMIN";
-
-//                this.idGroup = new UserGroup(login);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {

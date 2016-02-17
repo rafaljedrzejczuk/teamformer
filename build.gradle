@@ -1,0 +1,122 @@
+buildscript {
+        repositories {
+                mavenLocal()
+                mavenCentral()
+                maven{
+                        url "https://plugins.gradle.org/m2/"
+                }
+        }
+        dependencies {
+                classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2"
+                classpath "net.saliman:gradle-cobertura-plugin:2.3.0"
+        }
+}
+plugins {
+        id "org.sonarqube" version "1.2"
+}
+
+import org.apache.tools.ant.filters.*
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: 'pmd'
+apply plugin: 'cobertura'
+apply plugin: "org.sonarqube"   //gradle sonarqube
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+group = 'pl.teamformer'
+archivesBaseName = 'TeamFormer'
+version = '2.0.0'
+war.baseName = 'teamformer'
+war.version = ''
+//App settings
+def projectOrganizationName='Rafal Jedrzejczuk'
+def applicationId='TF'
+def projectLead='Rafal Jedrzejczuk'
+def projectDeveloper = 'Rafal Jedrzejczuk'
+def description = 'Simple Forum example'
+
+repositories {
+        mavenLocal()
+        mavenCentral()
+        maven{
+                url 'http://repository.primefaces.org'
+        }
+}
+//PROFILES: gradle clean build -Pdev/prod
+def prodProfile='prod'
+def devProfile='dev'
+def propertyDrivenProfile;
+def props = new Properties();
+
+if (project.hasProperty('prod')) {
+        propertyDrivenProfile = prodProfile
+        file("prod.properties").withInputStream { 
+                stream -> props.load(stream) 
+        }
+} else {
+        propertyDrivenProfile = devProfile
+        file("dev.properties").withInputStream { 
+                stream -> props.load(stream) 
+        }
+}
+war.baseName +=propertyDrivenProfile != devProfile ? "-$propertyDrivenProfile" : ""
+println "Using profile: $propertyDrivenProfile for $project.name"
+//replace tokens
+processResources {
+        filesMatching('**/*.properties') {
+                filter(ReplaceTokens, tokens: ["project.organization.name": projectOrganizationName])
+                filter(ReplaceTokens, tokens: ["project.name": project.name])
+                filter(ReplaceTokens, tokens: ["applicationId": applicationId])
+                filter(ReplaceTokens, tokens: ["project.version": version])
+                filter(ReplaceTokens, tokens: ["projectLead": projectLead])
+                filter(ReplaceTokens, tokens: ["projectDeveloper": projectDeveloper])
+                filter(ReplaceTokens, tokens: ["project.description": description])
+        }
+        filesMatching('**/persistence.xml'){
+                filter(ReplaceTokens, tokens: ["jndi": props["jndi"]])
+        }
+}
+//WEB-INF
+war {
+        filesMatching('**/*.xml'){
+                filter(ReplaceTokens, tokens: ["web.realm": props["realm"]])
+        }
+}
+
+dependencies {
+        providedCompile 'org.jboss.spec:jboss-javaee-7.0:1.0.3.Final'
+        providedCompile 'org.slf4j:slf4j-log4j12:1.7.10'
+        
+        compile 'org.primefaces:primefaces:5.3'
+        compile 'org.primefaces.themes:bootstrap:1.0.10'
+        compile 'net.sf.uadetector:uadetector-resources:2014.03'
+        compile 'org.jboss.spec.javax.xml.rpc:jboss-jaxrpc-api_1.1_spec:1.0.1.Final'
+        compile 'org.projectlombok:lombok:1.16.6'
+        
+        testCompile 'junit:junit:4.8.2'
+        testCompile('org.mockito:mockito-core:1.10.19') {
+                exclude group: 'org.hamcrest', module: 'hamcrest-core'
+        }
+        testCompile 'org.jboss.spec.javax.xml.rpc:jboss-jaxrpc-api_1.1_spec:1.0.1.Final'
+        testCompile 'com.h2database:h2:1.3.175'
+        testCompile 'org.hibernate:hibernate-entitymanager:4.3.8.Final'
+        testCompile 'org.hamcrest:java-hamcrest:2.0.0.0'
+}
+//PMD
+pmd {
+        toolVersion = '5.2.1'
+        ignoreFailures = true
+        ruleSetFiles = files("/src/main/resources/pmd_rules_common.xml")
+        reportsDir = file("$buildDir/reports/pmd")
+}
+//Cobertura
+cobertura {
+        coverageFormats = ['html', 'xml']				
+        coverageIgnoreTrivial = true					
+        coverageIgnores = ['org.slf4j.Logger.*']			
+        coverageReportDir = new File("$buildDir/reports/cobertura")	
+}
+test.finalizedBy(tasks.cobertura)
