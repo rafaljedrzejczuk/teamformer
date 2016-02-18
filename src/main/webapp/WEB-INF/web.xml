@@ -54,7 +54,8 @@
     
       <login-config>
             <auth-method>FORM</auth-method>
-            <realm-name>${realm.name}</realm-name>
+            <realm-name/>
+            <!--<realm-name>@web.realm@</realm-name>-->
             <form-login-config>
                   <form-login-page>/faces/login.xhtml</form-login-page>
                   <form-error-page>/faces/login.xhtml</form-error-page>
@@ -66,10 +67,10 @@
             <role-name>ADMIN_ROLE</role-name>
       </security-role>
     
-      <resource-ref>
-            <res-ref-name>asd</res-ref-name>
+<!--      <resource-ref>
+            <res-ref-name>TeamFormerMail</res-ref-name>
             <res-type>javax.mail.Session</res-type>
             <res-auth>Container</res-auth>
             <res-sharing-scope>Shareable</res-sharing-scope>
-      </resource-ref>
+      </resource-ref>-->
 </web-app>

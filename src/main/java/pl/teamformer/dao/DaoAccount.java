@@ -20,7 +20,7 @@ public class DaoAccount {
         private EntityManager em;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Account> getAccounts() {
-                return (List<Account>) em.createQuery("SELECT ac FROM Account ac WHERE ac.active = 1")
+                return (List<Account>) em.createQuery("SELECT a FROM Account a")
                         .getResultList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

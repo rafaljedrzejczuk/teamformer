@@ -21,14 +21,14 @@ apply plugin: 'java'
 apply plugin: 'war'
 apply plugin: 'pmd'
 apply plugin: 'cobertura'
-apply plugin: "org.sonarqube"   //gradle sonarqube
+apply plugin: 'org.sonarqube'   //gradle sonarqube
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'pl.teamformer'
 archivesBaseName = 'TeamFormer'
-version = '2.0.2'
+version = '2.0.3'
 war.baseName = 'teamformer'
 war.version = ''
 //App settings
@@ -91,7 +91,7 @@ dependencies {
         providedCompile 'org.slf4j:slf4j-log4j12:1.7.10'
         
         compile 'org.primefaces:primefaces:5.3'
-        compile 'org.primefaces.themes:bootstrap:1.0.10'
+        compile 'org.primefaces.themes:humanity:1.0.10'
         compile 'net.sf.uadetector:uadetector-resources:2014.03'
         compile 'org.jboss.spec.javax.xml.rpc:jboss-jaxrpc-api_1.1_spec:1.0.1.Final'
         compile 'org.projectlombok:lombok:1.16.6'

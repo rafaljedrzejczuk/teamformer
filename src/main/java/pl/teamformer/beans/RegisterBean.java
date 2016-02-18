@@ -28,8 +28,8 @@ public class RegisterBean {
         @Inject
         private DaoAccount daoAccount;
 
-        @Resource(name = "mail/teamformerofficial@gmail.com")
-        private Session mailSession;
+//        @Resource(name = "mail/teamformerofficial@gmail.com")
+//        private Session mailSession;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void registerAcount() throws NoSuchAlgorithmException, UnsupportedEncodingException {
                 if (daoAccount.registerAccount(account, true)) {
@@ -39,28 +39,28 @@ public class RegisterBean {
 //                account = new Account(); //requestScoped zapewnia refresh
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private void sendMessage(Account acc) {
-                Message msg = new MimeMessage(mailSession);
-                try {
-                        msg.setSubject("TeamFormer Forum");
-                        msg.setRecipient(Message.RecipientType.TO,
-                                new InternetAddress(acc.getEmail()));
-                        msg.setText("Dear " + acc.getLogin() + ","
-                                + "\n\nGreat news!"
-                                + "\nYou've just created your own TeamFormer.com account!"
-                                + "\n\nWe're glad you've joined our community!"
-                                + "\n\nYour data:"
-                                + "\nLogin: " + acc.getLogin()
-                                + "\nPassword: " +  acc.getPassword()
-                                + "\n\nBest regards!"
-                                + "\nTeam Former Official");
-                        System.out.println("Message created!\nSending..");
-                        Transport.send(msg);
-                        System.out.println("DONE!");
-                } catch (MessagingException me) {
-                        throw new RuntimeException(me);
-                }
-        }
+//        private void sendMessage(Account acc) {
+//                Message msg = new MimeMessage(mailSession);
+//                try {
+//                        msg.setSubject("TeamFormer Forum");
+//                        msg.setRecipient(Message.RecipientType.TO,
+//                                new InternetAddress(acc.getEmail()));
+//                        msg.setText("Dear " + acc.getLogin() + ","
+//                                + "\n\nGreat news!"
+//                                + "\nYou've just created your own TeamFormer.com account!"
+//                                + "\n\nWe're glad you've joined our community!"
+//                                + "\n\nYour data:"
+//                                + "\nLogin: " + acc.getLogin()
+//                                + "\nPassword: " +  acc.getPassword()
+//                                + "\n\nBest regards!"
+//                                + "\nTeam Former Official");
+//                        System.out.println("Message created!\nSending..");
+//                        Transport.send(msg);
+//                        System.out.println("DONE!");
+//                } catch (MessagingException me) {
+//                        throw new RuntimeException(me);
+//                }
+//        }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public boolean ifLoginExists(){
                 return daoAccount.ifLoginExists(account);

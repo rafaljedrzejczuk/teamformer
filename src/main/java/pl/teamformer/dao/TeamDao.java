@@ -14,7 +14,7 @@ public class TeamDao {
         private EntityManager em;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Team> getTeams() {
-                return (List<Team>) em.createQuery("SELECT t FROM Team t t.active = 1")
+                return (List<Team>) em.createQuery("SELECT t FROM Team t")
                         .getResultList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

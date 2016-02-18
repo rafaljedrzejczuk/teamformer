@@ -6,7 +6,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import pl.teamformer.model.Account;
 import pl.teamformer.model.Post;
 import pl.teamformer.model.Topic;
@@ -34,12 +33,13 @@ public class DaoTopic {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Topic> getTopics() {
-                return entityManager.createNamedQuery("Topic.findAll").getResultList();
+                return entityManager.createQuery("SELECT t FROM Topic t").getResultList();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Topic> getTopicsByCategory(Topic.Category category) {
-                Query query = entityManager.createNamedQuery("Topic.findByCategory").setParameter("category", category);
-                List<Topic> topicsByCat = (List<Topic>) query.getResultList();
+                List<Topic> topicsByCat = (List<Topic>) entityManager.createQuery("SELECT t FROM Topic t WHERE t.category = :category")
+                        .setParameter("category", category)
+                        .getResultList();
 
                 List<Post> posts = new ArrayList();
                 topicsByCat.stream().filter((t) -> (t.getNewestPost() != null)).forEach((t) -> {
@@ -70,8 +70,9 @@ public class DaoTopic {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removeTopic(Topic t) {
-                Topic toRemove = (Topic) entityManager.createNamedQuery("Topic.findById").setParameter("id", t.getId()).getSingleResult();
-                System.out.println("Removing a topic..");
+                Topic toRemove = (Topic) entityManager.createQuery("SELECT t FROM Topic t WHERE t.id = :id")
+                        .setParameter("id", t.getId())
+                        .getSingleResult();
                 entityManager.remove(toRemove);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

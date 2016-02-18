@@ -22,7 +22,9 @@ public class DaoPost {
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void removePost(Topic topic, Post post) {
-                Post toRemove  = (Post) em.createNamedQuery("Post.findById").setParameter("id", post.getId()).getSingleResult();
+                Post toRemove = (Post) em.createQuery("SELECT p FROM Post p WHERE p.id = :id")
+                        .setParameter("id", post.getId())
+                        .getSingleResult();
                 em.remove(toRemove);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
