@@ -23,7 +23,7 @@ import lombok.Setter;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(schema = "teamformer")
 public class Account extends AbstractEntity {
@@ -60,13 +60,13 @@ public class Account extends AbstractEntity {
 
         @Setter(AccessLevel.NONE)
         @Temporal(value = TemporalType.TIMESTAMP)
-        private final Date dateAdded = new Date();
+        private final Date added = new Date();
 
         @NotNull
         private Integer actions = 10;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
-                return dateAdded == null ? "none" : DateFormatters.SDF_DATE.format(dateAdded.getTime());
+                return added == null ? "none" : DateFormatters.SDF_DATE.format(added.getTime());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 

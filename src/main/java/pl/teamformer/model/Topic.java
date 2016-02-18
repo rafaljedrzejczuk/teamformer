@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(schema = "topic")
 public class Topic extends AbstractEntity {
@@ -45,14 +45,14 @@ public class Topic extends AbstractEntity {
         @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "idTopic")
         private List<Post> posts = new ArrayList();
 
-        private final Date dateAdded;
+        private final Date added = new Date();
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getTopicOwner() {
                 return idOwner.getLogin();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
-                return DateFormatters.SDF_DATE.format(dateAdded);
+                return DateFormatters.SDF_DATE.format(added);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addPost(Post p) {

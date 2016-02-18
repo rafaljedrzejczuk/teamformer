@@ -13,7 +13,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import pl.teamformer.dao.DaoAccount;
-import pl.teamformer.dao.DaoTopic;
 import pl.teamformer.model.Account;
 import pl.teamformer.tools.Messages;
 
@@ -34,14 +33,12 @@ public class LoggedBean implements Serializable {
         @Getter(AccessLevel.NONE)
         private DaoAccount dao;
         @Inject
-        private DaoTopic daoTopic;
-        @Inject
         @Getter(AccessLevel.NONE)
         private AccountDictionaryBean adb;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PostConstruct
         public void init() {
-                account = dao.getAccountByLogin(getName());
+                account = dao.getAccountByLogin(sessionContext.getCallerPrincipal().getName());
                 adb.addActiveUser(account.getLogin());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -56,10 +53,6 @@ public class LoggedBean implements Serializable {
                 if (!adb.getActiveAccounts().contains(account))
                         logOut();
                 System.out.println("Jesteś zalogowany!");
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public String getName() {
-                return sessionContext.getCallerPrincipal().getName();
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }

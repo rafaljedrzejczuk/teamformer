@@ -63,8 +63,8 @@
             <h:form>
                   <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
 
-                  <!-- 10 mins -->
-                  <p:idleMonitor timeout="600000">
+                  <!-- 5 mins -->
+                  <p:idleMonitor timeout="60000">
                         <p:ajax event="idle" listener="#{loggedBean.logOut()}" update="messagesIdle" />
                         <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
                   </p:idleMonitor>

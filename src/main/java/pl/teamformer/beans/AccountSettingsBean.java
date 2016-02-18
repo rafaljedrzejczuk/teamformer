@@ -20,28 +20,24 @@ public class AccountSettingsBean {
         private String password = "";
         private String email = "";
         private TeamPosition position;
-        
+
         @Inject
-        LoggedBean lb;
+        @Getter(AccessLevel.NONE)
+        private LoggedBean lb;
         @Inject
         @Getter(AccessLevel.NONE)
         private DaoAccount dao;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void save() {
-                Account yourAccount = lb.getAccount();
-                Account dbAccount = (Account) dao.getEntityManager().find(Account.class, yourAccount.getId());
+                Account dbAccount = lb.getAccount();
 
                 saveEmail(dbAccount);
                 savePassword(dbAccount);
-                saveAvatar(dbAccount);
                 saveTeamPosition(dbAccount);
 
-                System.out.println("Saving settings..");
-//                Account updated = dao.getEntityManager().merge(dbAccount);
                 dao.getAccounts().remove(dbAccount);
                 dao.getAccounts().add(dbAccount);
-                System.out.println("Saved.");
-                
+
                 lb.setAccount(dbAccount);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
@@ -49,13 +45,6 @@ public class AccountSettingsBean {
                 if (!"".equals(password)) {
                         a.setPassword(password);
                         password = "";
-                }
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private void saveAvatar(Account a) {
-                if (!"".equals(avatarURL)) {
-                        a.setAvatarURL(avatarURL);
-                        avatarURL = "";
                 }
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

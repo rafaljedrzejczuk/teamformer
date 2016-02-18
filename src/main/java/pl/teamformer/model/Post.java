@@ -2,7 +2,6 @@ package pl.teamformer.model;
 
 import java.util.Date;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,23 +12,23 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(schema = "teamformer")
 public class Post extends AbstractEntity {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO, generator = "POST_GEN")
-        @Column(name = "ID")
+        @GeneratedValue(strategy = GenerationType.AUTO)
         private Long id;
 
-        @Column(name = "TEXT", length = 255)
+        @Size(min = 10, max = 255)
         private String text;
 
         @OneToOne(cascade = {CascadeType.MERGE})
@@ -41,20 +40,10 @@ public class Post extends AbstractEntity {
         private Topic idTopic;
 
         @Temporal(value = TemporalType.DATE)
-        private Date dateAdded;
-
-        @Temporal(value = TemporalType.TIME)
-        private Date hourAdded;
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public Post() {
-                this.text = "Treść";
-
-                this.dateAdded = new Date();
-                this.hourAdded = new Date();
-        }
+        private Date added;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
-                return DateFormatters.SDF_DATE.format(getDateAdded()) + " at " + DateFormatters.SDF_HOUR.format(getHourAdded());
+                return DateFormatters.SDF_DATE.format(added) + " at " + DateFormatters.SDF_HOUR.format(added);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 }
