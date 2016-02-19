@@ -27,14 +27,14 @@ import pl.teamformer.tools.DateFormatters;
 import pl.teamformer.tools.GenerateHash;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(schema = "teamformer")
+@Table(name = "teamformer.account")
 public class Account extends AbstractEntity {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @NotNull

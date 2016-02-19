@@ -10,22 +10,17 @@
                 <h:outputText value="#{messages.login_info}" />
                 <p:focus for="j_username"/>
                 <p:panel header="Log In">
-                    <form method="post" accept-charset="UTF-8" action="j_security_check">
+                    <form method="post" accept-charset="UTF-8" action="j_security_check">                        
                         <center>
-                            <h:panelGrid columns="3" cellpadding="5">
+                            <h:panelGrid columns="2" cellpadding="5">
                                 <h:outputLabel id="login" value="Login:" />
-                                <p:inputText value="#{j_username}" id="j_username" required="true" validatorMessage="Co najmniej 4 znaki!" 
-                                             requiredMessage="Tutaj musisz potwierdzić swoje sekretne hasło!"/>
-                                <p:message for="login" />
+                                <p:inputText id="j_username"/>
 
                                 <h:outputLabel id="password" value="Password:" />
-                                <p:password value="#{j_password}" id="j_password" required="true" validatorMessage="Co najmniej 6 znaków!" 
-                                            requiredMessage="Wymagane hasło!"/>
+                                <p:inputText type="password" value="#{j_password}" id="j_password" required="true"/>
                                 <p:message for="password" />
+                                 <p:commandButton value="Login" type="submit" ajax="false" action="home"/>
                             </h:panelGrid>
-                            <h:form>
-                                  <p:commandButton value="Login" type="submit" ajax="false" action="home"/>
-                            </h:form>
                         </center>
                     </form>
                 </p:panel>

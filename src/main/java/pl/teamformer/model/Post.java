@@ -18,14 +18,14 @@ import lombok.EqualsAndHashCode;
 import pl.teamformer.tools.DateFormatters;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(schema = "teamformer")
+@Table(name = "teamformer.post")
 public class Post extends AbstractEntity {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @Id
-        @GeneratedValue(strategy = GenerationType.AUTO)
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
 
         @Size(min = 10, max = 255)

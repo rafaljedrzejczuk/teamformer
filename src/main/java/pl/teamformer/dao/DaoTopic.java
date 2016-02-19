@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import pl.teamformer.model.Account;
 import pl.teamformer.model.Post;
 import pl.teamformer.model.Topic;
 import lombok.*;
+import pl.teamformer.producers.DataRepository;
 
 @Data
 @Stateless
 public class DaoTopic {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PersistenceContext
+        @Inject
+        @DataRepository
         @Getter(AccessLevel.NONE)
         private EntityManager entityManager;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

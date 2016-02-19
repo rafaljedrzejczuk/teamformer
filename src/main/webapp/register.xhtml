@@ -20,7 +20,7 @@
                                           <p:message for="login" />
 
                                           <h:outputLabel for="pwd1" value="Password:" />
-                                          <p:password id="pwd1" value="#{registerBean.account.password}" match="pwd2" label="Password 1" />
+                                          <p:password id="pwd1" value="#{registerBean.account.password}" match="pwd2" label="Password 1" inline="true" />
                                           <p:message for="pwd1" />
 
                                           <h:outputLabel for="pwd2" value="Confirm Password:" />
@@ -34,7 +34,7 @@
                                           <p:message for="email" />
 
                                           <p:outputLabel value="" />  
-                                          <p:commandButton id="register" value="Register" process="@form" action="#{registerBean.registerAcount()}" update="@form"/>
+                                          <p:commandButton value="Register" process="@form" action="#{registerBean.registerAcount()}" update="@form"/>
                                     </h:panelGrid>  
                               </p:panel> 
                         </ui:define>

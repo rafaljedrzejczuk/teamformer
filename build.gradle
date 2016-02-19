@@ -28,7 +28,7 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 group = 'pl.teamformer'
 archivesBaseName = 'TeamFormer'
-version = '2.0.4'
+version = '2.0.5'
 war.baseName = 'teamformer'
 war.version = ''
 //App settings

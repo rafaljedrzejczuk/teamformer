@@ -1,17 +1,19 @@
 package pl.teamformer.dao;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import pl.teamformer.model.Account;
 import pl.teamformer.model.Post;
 import pl.teamformer.model.Topic;
+import pl.teamformer.producers.DataRepository;
 
 @Stateless
 public class DaoPost {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PersistenceContext
+        @Inject
+        @DataRepository
         private EntityManager em;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void addPost(Account account, Topic topic, Post p) {

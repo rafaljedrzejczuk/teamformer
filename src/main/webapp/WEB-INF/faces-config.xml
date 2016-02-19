@@ -1,9 +1,20 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<faces-config version="2.2"
-              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+<faces-config version="2.0"
+              xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+        
+        <factory>
+                <exception-handler-factory>
+                        org.primefaces.application.exceptionhandler.PrimeExceptionHandlerFactory
+                </exception-handler-factory>
+        </factory>
+        <application>
+                <el-resolver>
+                        org.primefaces.application.exceptionhandler.PrimeExceptionHandlerELResolver
+                </el-resolver>
+        </application>
+        
       <navigation-rule>
             <from-view-id>*</from-view-id>
             <navigation-case>
@@ -75,11 +86,4 @@
                   <redirect />
             </navigation-case>
       </navigation-rule>
-    
-      <application>
-            <resource-bundle>
-                  <base-name>/Bundle</base-name>
-                  <var>bundle</var>
-            </resource-bundle>
-      </application>
 </faces-config>

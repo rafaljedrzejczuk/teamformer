@@ -2,17 +2,19 @@ package pl.teamformer.dao;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
 import pl.teamformer.model.Account;
+import pl.teamformer.producers.DataRepository;
 import pl.teamformer.tools.Messages;
 
 @Stateless
 public class DaoAccount {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        @PersistenceContext
+        @Inject
+        @DataRepository
         private EntityManager em;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public List<Account> getAccounts() {
