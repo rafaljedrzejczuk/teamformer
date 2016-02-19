@@ -9,6 +9,7 @@ import lombok.Getter;
 import pl.teamformer.dao.DaoAccount;
 import pl.teamformer.model.Account;
 import pl.teamformer.model.Account.TeamPosition;
+import pl.teamformer.producers.ActualUser;
 
 @Data
 @Named
@@ -16,47 +17,15 @@ import pl.teamformer.model.Account.TeamPosition;
 public class AccountSettingsBean {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private String avatarURL = "";
-        private String password = "";
-        private String email = "";
-        private TeamPosition position;
-
-        @Inject
-        @Getter(AccessLevel.NONE)
-        private LoggedBean lb;
         @Inject
         @Getter(AccessLevel.NONE)
         private DaoAccount dao;
+        @Inject
+        @ActualUser
+        private Account account;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public void save() {
-                Account dbAccount = lb.getAccount();
-
-                saveEmail(dbAccount);
-                savePassword(dbAccount);
-                saveTeamPosition(dbAccount);
-
-                dao.getAccounts().remove(dbAccount);
-                dao.getAccounts().add(dbAccount);
-
-                lb.setAccount(dbAccount);
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private void savePassword(Account a) {
-                if (!"".equals(password)) {
-                        a.setPassword(password);
-                        password = "";
-                }
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private void saveEmail(Account a) {
-                if (!"".equals(email)) {
-                        a.setEmail(email);
-                        email = "";
-                }
-        }
-        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private void saveTeamPosition(Account a) {
-                a.setTeamPosition(position);
+                dao.update(account);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public TeamPosition[] getTeamPositions() {

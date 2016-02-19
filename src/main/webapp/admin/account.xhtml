@@ -1,39 +1,27 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-    <h:head>
-        <title>Home/Add Topic to </title>
-        <link rel="stylesheet" type="text/css" href="/WEB-INF/styles/style.css"/>
-    </h:head>
-    <h:body>
-        <ui:composition template="/WEB-INF/templates/template_admin.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/templates/template_admin.xhtml">
 
-            <ui:define name="content">
+        <ui:define name="content">
                 <!-- Topic's posts -->
                 <center>
-                    <h:form>
 
-                        <p:panel header="Konto użtkownika #{accountShowBean.selectedAccount.login}">
-                            <h:panelGrid class="topicimage" columns="1" cellpadding="5">
-                                <p:outputLabel value="#{accountShowBean.selectedAccount.group}" />
-                                <p:outputLabel value="Last visit: #{accountShowBean.selectedAccount.lastVisited}" />
-                                <img src="#{accountShowBean.selectedAccount.avatarURL}" alt="Avatar Not Found!" style="width:200px;height:200px" />
-                                <p:outputLabel value="#{accountShowBean.selectedAccount.login}" />
-                            </h:panelGrid>>
-                            
-                            <h:column class="topictitle">
-                                <p:outputLabel value="#{accountShowBean.selectedAccount.dateAdded}" />
-                            </h:column>
+                        <p:panel header="Konto użtkownika #{accountSettingsBean.account.login}">
+                                <h:panelGrid class="topicimage" columns="1" cellpadding="5">
+                                        <p:outputLabel value="#{accountSettingsBean.account.group}" />
+                                        <p:outputLabel value="#{accountSettingsBean.account.login}" />
+                                </h:panelGrid>>
+
+                                <h:column class="topictitle">
+                                        <p:outputLabel value="#{accountSettingsBean.account.added}" />
+                                </h:column>
                         </p:panel>
 
-                    </h:form>
                 </center>
-            </ui:define>
+        </ui:define>
 
-        </ui:composition>
-    </h:body>
-</html>
-
+</ui:composition>

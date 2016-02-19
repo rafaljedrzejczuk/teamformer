@@ -1,27 +1,20 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
-      <h:head>
-            <title>Home/#{topicBean.selectedTopic.title}</title>
-      </h:head>
-      <h:body>
-            <h:outputScript name="/javascript/godown.js" />
-            <ui:composition template="/WEB-INF/templates/template_admin.xhtml">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/templates/template_admin.xhtml">
                   <ui:define name="content">
                         <!-- Topic's posts -->
                         <center>
 
-                              <h:form> 
                                     <p:panel header="Chat">
                                           <f:facet name="header">
                                                 #{topicBean.selectedTopic.title}
                                           </f:facet>
 
-                                          <h:form id="news"> 
                                                 <p:dataTable value="#{topicBean.selectedTopicPosts}" var="post" rows="10" paginator="true" 
                                                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
@@ -43,20 +36,14 @@
                                                 </p:dataTable>
                                                 <br/>
                                                 <p:editor  id="editor" widgetVar="editorWidget" value="#{postBean.post.text}" required="true" width="600"
-                                                           requiredMessage="Nie podałes treści postu, cyganie!" validatorMessage="Post przekracza 1000 znaków, patafianie!">
+                                                           requiredMessage="Nie podałes treści postu!" validatorMessage="Post przekracza 1000 znaków!">
                                                       <f:validateLength maximum="1000" />
                                                 </p:editor>
                                                 <p:message for="editor" style="margin-top: 10px;"/>
-                                                <p:commandButton id="submit" value="Dodaj post" action="#{postBean.addPost()}" ajax="false"/>
-                                          </h:form>
+                                                <p:commandButton value="Dodaj post" action="#{postBean.addPost()}" update="@form"/>
 
                                     </p:panel>
-                              </h:form>
 
                         </center>
                   </ui:define>
-            </ui:composition>
-
-      </h:body>
-</html>
-
+</ui:composition>

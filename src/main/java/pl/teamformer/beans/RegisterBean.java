@@ -1,7 +1,5 @@
 package pl.teamformer.beans;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import javax.inject.Named;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
@@ -31,12 +29,13 @@ public class RegisterBean {
 //        @Resource(name = "mail/teamformerofficial@gmail.com")
 //        private Session mailSession;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public void registerAcount() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-                if (daoAccount.registerAccount(account, true)) {
+        public String registerAcount() {
+                if (daoAccount.registerAccount(account)) {
                         //sendMessage(login, password, email);
                         Messages.redirectWithMessage("admin/home.xhtml", "Konto *" + account.getLogin() + "* zostało pomyślnie zarejstrowane!");
+                        return "home";
                 }
-//                account = new Account(); //requestScoped zapewnia refresh
+                return "";
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 //        private void sendMessage(Account acc) {
@@ -62,11 +61,11 @@ public class RegisterBean {
 //                }
 //        }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public boolean ifLoginExists(){
+        public boolean ifLoginExists() {
                 return daoAccount.ifLoginExists(account);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        public boolean ifEmailExists(){
+        public boolean ifEmailExists() {
                 return daoAccount.ifEmailExists(account);
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

@@ -3,7 +3,6 @@ package pl.teamformer.beans;
 import pl.teamformer.beans.dictionaries.AccountDictionaryBean;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
-import javax.ejb.SessionContext;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -14,6 +13,7 @@ import lombok.Data;
 import lombok.Getter;
 import pl.teamformer.dao.DaoAccount;
 import pl.teamformer.model.Account;
+import pl.teamformer.producers.ActualUser;
 import pl.teamformer.tools.Messages;
 
 @Data
@@ -22,13 +22,9 @@ import pl.teamformer.tools.Messages;
 public class LoggedBean implements Serializable {
 
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
-        private String password = null;
-        private String login = null;
-        private Account account;
-
         @Inject
-        @Getter(AccessLevel.NONE)
-        private SessionContext sessionContext;
+        @ActualUser
+        private Account account;
         @Inject
         @Getter(AccessLevel.NONE)
         private DaoAccount dao;
@@ -38,7 +34,6 @@ public class LoggedBean implements Serializable {
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         @PostConstruct
         public void init() {
-                account = dao.getAccountByLogin(sessionContext.getCallerPrincipal().getName());
                 adb.addActiveUser(account.getLogin());
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/

@@ -35,7 +35,9 @@
             <!--<p:messages id="messages" autoUpdate="true" globalOnly="true" closable="true" showSummary="false" showDetail="true"/>-->
 
             <div id="content" class="center_content">
-                  <ui:insert name="content">Content</ui:insert>
+                    <h:form id="mainForm">
+                        <ui:insert name="content">Content</ui:insert>
+                    </h:form>
             </div>
 
             <div id="bottom">
@@ -63,8 +65,8 @@
             <h:form>
                   <p:growl id="messagesIdle" sticky="true" showDetail="true" showSummary="false" />
 
-                  <!-- 5 mins -->
-                  <p:idleMonitor timeout="60000">
+                  <!-- 5min -->
+                  <p:idleMonitor timeout="300000">
                         <p:ajax event="idle" listener="#{loggedBean.logOut()}" update="messagesIdle" />
                         <p:ajax event="active" listener="#{messagesBean.showMessageInfo('Czy ta kawka nie była zbyt gorąca? :)')}" update="messagesIdle" />
                   </p:idleMonitor>

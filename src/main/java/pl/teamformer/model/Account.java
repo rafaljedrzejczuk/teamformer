@@ -1,5 +1,7 @@
 package pl.teamformer.model;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,12 +17,14 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import pl.teamformer.tools.DateFormatters;
+import pl.teamformer.tools.GenerateHash;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -34,15 +38,18 @@ public class Account extends AbstractEntity {
         private Long id;
 
         @NotNull
-        @Column(nullable = false, unique = true, length = 30)
+        @Size(min = 3, max = 30)
+        @Column(unique = true)
         private String login;
 
         @NotNull
-        @Column(nullable = false)
+        @Size(min = 6)
+        @Setter(AccessLevel.NONE)
         private String password;
 
         @NotNull
-        @Column(nullable = false, unique = true)
+        @Size(max = 30)
+        @Column(unique = true)
         private String email;
 
         @Enumerated(EnumType.STRING)
@@ -55,18 +62,24 @@ public class Account extends AbstractEntity {
         @Enumerated(EnumType.STRING)
         private TeamPosition teamPosition = TeamPosition.ALL;
 
-        @NotNull
         private Integer warn = 0;
 
         @Setter(AccessLevel.NONE)
         @Temporal(value = TemporalType.TIMESTAMP)
         private final Date added = new Date();
 
-        @NotNull
         private Integer actions = 10;
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
         public String getDateAddedToString() {
                 return added == null ? "none" : DateFormatters.SDF_DATE.format(added.getTime());
+        }
+        /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
+        public void setPassword(String pass) {
+                try {
+                        password = GenerateHash.generateHash(pass);
+                } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+                        throw new RuntimeException("Password decryption error");
+                }
         }
         /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 
